@@ -30,17 +30,18 @@
   },
   "homepage": "https://github.com/risenforces/eslint-config-kit-cli#readme",
   "dependencies": {
+    "chalk": "^3.0.0",
     "deepmerge": "^4.2.2",
     "inquirer": "7.0.4",
-    "npm-programmatic": "0.0.12",
-    "yamljs": "0.3.0",
-    "yarn-programmatic": "^0.1.1"
+    "ora": "^4.0.3",
+    "yamljs": "0.3.0"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.2.0",
     "@types/inquirer": "6.5.0",
     "@types/jest": "25.1.2",
     "@types/node": "12.12.21",
+    "@types/ora": "^3.2.0",
     "@types/rimraf": "2.0.3",
     "@types/webpack-node-externals": "1.7.1",
     "@types/yamljs": "0.2.30",

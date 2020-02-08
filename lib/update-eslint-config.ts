@@ -1,14 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as YAML from 'yamljs'
-import * as merge from 'deepmerge'
-import {
-  Answers,
-  Json,
-  EslintConfigMeta,
-  AliasesMeta,
-  PackageJson,
-} from './shared-types'
+import { Answers, Json, EslintConfigMeta, PackageJson } from './shared-types'
 import {
   FILENAMES,
   DEPENDENCIES,
@@ -16,65 +9,7 @@ import {
   CONFIG_PREFIX,
 } from './constants'
 import { isFromConfigKit, cropConfigName } from './config-name-helpers'
-
-const aliasesAdders = {
-  js: (currentConfig: Json, meta: AliasesMeta) =>
-    merge(currentConfig, {
-      settings: {
-        'import/resolver': {
-          alias: {
-            map: meta.aliasMap,
-            extensions: ['.js', '.jsx', '.json'],
-          },
-        },
-      },
-      rules: {
-        'import/order': [
-          'warn',
-          {
-            groups: [
-              'builtin',
-              'external',
-              'internal',
-              'parent',
-              'sibling',
-              'index',
-            ],
-            pathGroups: meta.pathGroups,
-          },
-        ],
-      },
-    }),
-  ts: (currentConfig: Json, meta: AliasesMeta) =>
-    merge(currentConfig, {
-      settings: {
-        'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
-        },
-        'import/resolver': {
-          typescript: {
-            alwaysTryTypes: true,
-          },
-        },
-      },
-      rules: {
-        'import/order': [
-          'warn',
-          {
-            groups: [
-              'builtin',
-              'external',
-              'internal',
-              'parent',
-              'sibling',
-              'index',
-            ],
-            pathGroups: meta.pathGroups,
-          },
-        ],
-      },
-    }),
-}
+import { tsAliasesAdder, jsAliasesAdder } from './aliases-adders'
 
 interface GetUpdateConfigParams {
   initialConfig: Json
@@ -122,9 +57,9 @@ function getUpdatedConfig({
 
   if (aliases.setup) {
     if (useTs) {
-      updatedConfig = aliasesAdders.ts(updatedConfig, aliases.meta)
+      updatedConfig = tsAliasesAdder(updatedConfig, aliases.meta)
     } else {
-      updatedConfig = aliasesAdders.js(updatedConfig, aliases.meta)
+      updatedConfig = jsAliasesAdder(updatedConfig, aliases.meta)
     }
   }
 

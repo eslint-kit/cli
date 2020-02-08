@@ -28,8 +28,11 @@ export function getDependenciesToInstall({
 
   const configsMap = toMap(configs)
 
-  // Core dependencies
-  add(['eslint', 'eslint-config-kit'])
+  add(['eslint'])
+
+  if (configsMap.size > 0) {
+    add(['eslint-config-kit'])
+  }
 
   if (configsMap.has('base')) {
     add(['eslint-plugin-import'])

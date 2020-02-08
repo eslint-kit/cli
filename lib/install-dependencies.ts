@@ -1,52 +1,29 @@
-import * as npm from 'npm-programmatic'
-import * as yarn from 'yarn-programmatic'
+import * as chalk from 'chalk'
 import { Answers } from './shared-types'
-import { log, Color } from './log'
+import { log } from './util/log'
+import { NpmPackageManager, YarnPackageManager } from './package-managers'
+import { MESSAGES } from './ui/messages'
 
-interface InstallerParams {
-  runningPath: string
-  dependencies: string[]
-}
-
-const installers = {
-  npm: ({ runningPath, dependencies }: InstallerParams) => {
-    return new Promise((resolve, reject) => {
-      npm
-        .install(dependencies, {
-          cwd: runningPath,
-          saveDev: true,
-        })
-        .then(resolve)
-        .catch(reject)
-    })
-  },
-  yarn: ({ runningPath, dependencies }: InstallerParams) => {
-    return yarn.add(dependencies, {
-      cwd: runningPath,
-      dev: true,
-    })
-  },
+const PACKAGE_MANAGERS = {
+  npm: NpmPackageManager,
+  yarn: YarnPackageManager,
 }
 
 interface InstallDependenciesParams {
   answers: Answers
-  runningPath: string
   dependencies: string[]
 }
 
 export async function installDependencies({
   answers,
-  runningPath,
   dependencies,
 }: InstallDependenciesParams): Promise<void> {
   if (dependencies.length === 0) {
-    log('All dependencies are already installed! Skipping..', Color.Green)
+    log(MESSAGES.DEPENDENCIES_ALREADY_INSTALLED, chalk.green)
     return
   }
 
-  log('Installing dependencies..', Color.Blue)
-
   const { packageManager } = answers
 
-  await installers[packageManager]({ runningPath, dependencies })
+  await PACKAGE_MANAGERS[packageManager].install(dependencies, 'dev')
 }

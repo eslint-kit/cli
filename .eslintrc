@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "kit/base",
+    "kit/prettier",
+    "kit/node",
+    "kit/typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "no-console": "off"
+  }
+}

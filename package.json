@@ -21,8 +21,8 @@
     "publish:next": "npm publish --access public --tag next",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
-    "test": "jest --config test/jest-config.json",
-    "test:dev": "npm run clean && jest --config test/jest-config.json --watchAll"
+    "test": "jest --config test/jest-config.json --passWithNoTests",
+    "test:dev": "npm run clean && jest --config test/jest-config.json --passWithNoTests --watchAll"
   },
   "repository": {
     "type": "git",

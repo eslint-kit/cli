@@ -17,10 +17,6 @@
     "clean": "gulp clean:bundle",
     "lint": "eslint {lib,bin}/**/*.ts --fix",
     "start": "node bin/eslint-kit.js",
-    "prepublish:next": "npm run build",
-    "publish:next": "npm publish --access public --tag next",
-    "prepublish:npm": "npm run build",
-    "publish:npm": "npm publish --access public",
     "test": "jest --config test/jest-config.json --passWithNoTests",
     "test:dev": "npm run clean && jest --config test/jest-config.json --passWithNoTests --watchAll"
   },

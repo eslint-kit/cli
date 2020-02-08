@@ -11,6 +11,8 @@ export const DEPENDENCIES = {
   TS_PARSER: '@typescript-eslint/parser',
 }
 
+export const CONFIG_PREFIX = 'kit/'
+
 export const CONFIG_PRIORITIES: Record<Config, number> = {
   'base': 1,
   'typescript': 2,

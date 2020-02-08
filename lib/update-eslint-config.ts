@@ -9,7 +9,12 @@ import {
   AliasesMeta,
   PackageJson,
 } from './shared-types'
-import { FILENAMES, DEPENDENCIES, CONFIG_PRIORITIES } from './constants'
+import {
+  FILENAMES,
+  DEPENDENCIES,
+  CONFIG_PRIORITIES,
+  CONFIG_PREFIX,
+} from './constants'
 import { isFromConfigKit, cropConfigName } from './config-name-helpers'
 
 const aliasesAdders = {
@@ -105,7 +110,7 @@ function getUpdatedConfig({
     updatedConfig.extends = [updatedConfig.extends]
   }
 
-  const addedExtends = configs.map(configName => `kit/${configName}`)
+  const addedExtends = configs.map(configName => CONFIG_PREFIX + configName)
 
   updatedConfig.extends = (updatedConfig.extends.concat(
     addedExtends

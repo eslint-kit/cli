@@ -1,9 +1,9 @@
 {
   "extends": [
     "kit/base",
-    "kit/prettier",
+    "kit/typescript",
     "kit/node",
-    "kit/typescript"
+    "kit/prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "rules": {

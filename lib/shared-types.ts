@@ -59,7 +59,6 @@ export type Config =
 export type PackageManager = 'npm' | 'yarn'
 
 export interface Answers {
-  packageManager: PackageManager
   configs: Config[]
   addRecommendedPrettierConfig?: boolean
   aliases: {
@@ -81,3 +80,10 @@ export type MeaningfulDependency =
   | 'babel-eslint'
   | 'eslint-import-resolver-typescript'
   | 'eslint-import-resolver-alias'
+
+export interface Choice {
+  name: string
+  value: string | number
+  checked?: boolean
+  disabled?: boolean
+}

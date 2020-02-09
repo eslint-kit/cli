@@ -1,31 +1,15 @@
 import * as inquirer from 'inquirer'
-import {
-  PrettierConfigMeta,
-  Answers,
-  Config,
-  PackageManager,
-} from './shared-types'
+import { PrettierConfigMeta, Answers, Config, Choice } from './shared-types'
 import { generateAliasesMeta } from './generate-aliases-meta'
 import { toMap } from './util/to-map'
-
-interface AskQuestionsParams {
-  prettierConfigMeta: PrettierConfigMeta
-  installedConfigs: Config[]
-}
-
-interface Choice {
-  name: string
-  value: string | number
-  checked?: boolean
-  disabled?: boolean
-}
 
 interface ConfigChoice extends Choice {
   value: Config
 }
 
-interface PackageManagerChoice extends Choice {
-  value: PackageManager
+interface AskQuestionsParams {
+  prettierConfigMeta: PrettierConfigMeta
+  installedConfigs: Config[]
 }
 
 export function askQuestions({
@@ -48,18 +32,7 @@ export function askQuestions({
     return !installedConfigsMap.has(choice.value)
   })
 
-  const packageManagerChoices: PackageManagerChoice[] = [
-    { name: 'npm', value: 'npm' },
-    { name: 'Yarn', value: 'yarn' },
-  ]
-
   return inquirer.prompt([
-    {
-      type: 'list',
-      name: 'packageManager',
-      message: 'Choose your package manager',
-      choices: packageManagerChoices,
-    },
     {
       type: 'checkbox',
       name: 'configs',

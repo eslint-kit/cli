@@ -13,6 +13,7 @@ import { getInstalledConfings } from './get-installed-configs'
 import { getInstalledDependencies } from './get-installed-dependencies'
 import { checkIfTsShouldBeUsed } from './check-if-ts-should-be-used'
 import { MESSAGES } from './ui/messages'
+import { getPackageManager } from './get-package-manager'
 
 export async function runCLI(): Promise<void> {
   const rootDirFileNames = fs.readdirSync(process.cwd())
@@ -29,6 +30,8 @@ export async function runCLI(): Promise<void> {
   const installedConfigs = getInstalledConfings({ eslintConfigMeta })
 
   const prettierConfigMeta = findPrettierConfig({ rootDirFileNames })
+
+  const packageManager = await getPackageManager({ rootDirFileNames })
 
   const answers = await askQuestions({ installedConfigs, prettierConfigMeta })
 
@@ -60,7 +63,7 @@ export async function runCLI(): Promise<void> {
   })
 
   await installDependencies({
-    answers,
+    packageManager,
     dependencies: dependenciesToInstall,
   })
 

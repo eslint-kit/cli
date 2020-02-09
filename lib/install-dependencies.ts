@@ -23,7 +23,9 @@ export async function installDependencies({
     return
   }
 
-  const { packageManager } = answers
+  const { packageManager: packageManagerName } = answers
 
-  await PACKAGE_MANAGERS[packageManager].install(dependencies, 'dev')
+  const packageManager = new PACKAGE_MANAGERS[packageManagerName]()
+
+  await packageManager.install(dependencies, 'dev')
 }

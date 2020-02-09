@@ -1,3 +1,7 @@
 import { AbstractRunner } from './abstract.runner'
 
-export const YarnRunner = new AbstractRunner('yarn')
+export class YarnRunner extends AbstractRunner {
+  constructor() {
+    super('yarn')
+  }
+}

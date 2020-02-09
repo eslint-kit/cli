@@ -17,8 +17,8 @@
     "clean": "gulp clean:bundle",
     "lint": "eslint {lib,bin}/**/*.ts --fix",
     "start": "node bin/eslint-kit.js",
-    "test": "jest --config test/jest-config.json --passWithNoTests",
-    "test:dev": "npm run clean && jest --config test/jest-config.json --passWithNoTests --watchAll"
+    "test": "jest --config jest-config.json --passWithNoTests --silent",
+    "test:dev": "npm run clean && jest --config jest-config.json --passWithNoTests --watchAll"
   },
   "repository": {
     "type": "git",

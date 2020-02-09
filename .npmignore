@@ -10,7 +10,6 @@ CONTRIBUTE.md
 # source
 **/*.ts
 *.ts
-/test
 
 # definitions
 !**/*.d.ts

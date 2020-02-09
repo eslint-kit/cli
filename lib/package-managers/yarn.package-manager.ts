@@ -1,10 +1,10 @@
-import { NpmRunner } from '../runners/npm.runner'
+import { YarnRunner } from '../runners/yarn.runner'
 import { AbstractPackageManager } from './abstract.package-manager'
 import { PackageManagerCommands } from './types'
 
-class YarnPackageManagerClass extends AbstractPackageManager {
+export class YarnPackageManager extends AbstractPackageManager {
   constructor() {
-    super(NpmRunner)
+    super(new YarnRunner())
   }
 
   get cli(): PackageManagerCommands {
@@ -16,5 +16,3 @@ class YarnPackageManagerClass extends AbstractPackageManager {
     }
   }
 }
-
-export const YarnPackageManager = new YarnPackageManagerClass()

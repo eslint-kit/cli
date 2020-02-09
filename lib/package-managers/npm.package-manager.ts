@@ -2,9 +2,9 @@ import { NpmRunner } from '../runners/npm.runner'
 import { AbstractPackageManager } from './abstract.package-manager'
 import { PackageManagerCommands } from './types'
 
-class NpmPackageManagerClass extends AbstractPackageManager {
+export class NpmPackageManager extends AbstractPackageManager {
   constructor() {
-    super(NpmRunner)
+    super(new NpmRunner())
   }
 
   get cli(): PackageManagerCommands {
@@ -16,5 +16,3 @@ class NpmPackageManagerClass extends AbstractPackageManager {
     }
   }
 }
-
-export const NpmPackageManager = new NpmPackageManagerClass()

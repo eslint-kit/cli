@@ -1,7 +1,9 @@
+import { PackageManager } from '../shared-types'
 import { AbstractRunner } from './abstract.runner'
 
 export class NpmRunner extends AbstractRunner {
   constructor() {
-    super('npm')
+    const name: PackageManager = 'npm'
+    super(name)
   }
 }

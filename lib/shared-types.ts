@@ -56,8 +56,10 @@ export type Config =
   | 'node'
   | 'typescript'
 
+export type PackageManager = 'npm' | 'yarn'
+
 export interface Answers {
-  packageManager: 'npm' | 'yarn'
+  packageManager: PackageManager
   configs: Config[]
   addRecommendedPrettierConfig?: boolean
   aliases: {

@@ -1,11 +1,31 @@
 import * as inquirer from 'inquirer'
-import { PrettierConfigMeta, Answers } from './shared-types'
+import {
+  PrettierConfigMeta,
+  Answers,
+  Config,
+  PackageManager,
+} from './shared-types'
 import { generateAliasesMeta } from './generate-aliases-meta'
 import { toMap } from './util/to-map'
 
 interface AskQuestionsParams {
   prettierConfigMeta: PrettierConfigMeta
-  installedConfigs: string[]
+  installedConfigs: Config[]
+}
+
+interface Choice {
+  name: string
+  value: string | number
+  checked?: boolean
+  disabled?: boolean
+}
+
+interface ConfigChoice extends Choice {
+  value: Config
+}
+
+interface PackageManagerChoice extends Choice {
+  value: PackageManager
 }
 
 export function askQuestions({
@@ -14,34 +34,38 @@ export function askQuestions({
 }: AskQuestionsParams): Promise<Answers> {
   const installedConfigsMap = toMap(installedConfigs)
 
-  const choices = [
+  const configChoices: ConfigChoice[] = [
     { name: 'Base', value: 'base', checked: true },
     { name: 'Prettier', value: 'prettier' },
     { name: 'React', value: 'react' },
     { name: 'React (performant)', value: 'react/performant' },
     { name: 'Node', value: 'node' },
     { name: 'TypeScript', value: 'typescript' },
-  ].filter(choice => {
+  ]
+
+  const availableConfigChoices = configChoices.filter(choice => {
     // Don't offer already installed configs
     return !installedConfigsMap.has(choice.value)
   })
+
+  const packageManagerChoices: PackageManagerChoice[] = [
+    { name: 'npm', value: 'npm' },
+    { name: 'Yarn', value: 'yarn' },
+  ]
 
   return inquirer.prompt([
     {
       type: 'list',
       name: 'packageManager',
       message: 'Choose your package manager',
-      choices: [
-        { name: 'npm', value: 'npm' },
-        { name: 'Yarn', value: 'yarn' },
-      ],
+      choices: packageManagerChoices,
     },
     {
       type: 'checkbox',
       name: 'configs',
       message: 'What configs you want to add?',
-      choices,
-      validate: configs => {
+      choices: availableConfigChoices,
+      validate: (configs: Config[]) => {
         if (configs.includes('react') && configs.includes('react/performant')) {
           return '"React" and "React (performant)" configs cannot be chosen together'
         }

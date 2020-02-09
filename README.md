@@ -17,14 +17,14 @@ The ESLint Kit CLI is a command-line interface tool that helps you to setup ESLi
 
 It can:
 
-- Update eslint config.  
-  **(JSON / YAML)**
+- Setup configs from [eslint-config-kit](https://github.com/eslint-kit/eslint-config-kit) automatically.  
+  **(JSON / YAML eslint config files are supported)**
 
-- Install dependencies.  
+- Install required dependencies.  
   **(NPM / Yarn)**
 
 - Add aliases support for `eslint-plugin-import`.  
-  **(JS / TS)**
+  **(both JS and TS parsers are supported)**
 
 - Create recommended `.prettierrc` for `kit/prettier` config.
 
@@ -39,3 +39,5 @@ $ npm i -g @eslint-kit/cli
 ```
 $ eslint-kit
 ```
+
+Learn more about `eslint-kit` [here](https://github.com/eslint-kit/eslint-config-kit).

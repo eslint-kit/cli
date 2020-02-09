@@ -4,6 +4,8 @@ export const MESSAGES = {
   CONFIGS_UPDATING_STARTED: 'Updating configs..',
   CONFIGS_UPDATING_SUCCEED: 'Successfully updated configs',
   COMPLETED: 'Completed!',
+  PLEASE_RESTART:
+    'Please restart your IDE/editor to make sure config works properly',
   DEPENDENCIES_ALREADY_INSTALLED:
     'All dependencies are already installed! Skipping..',
   PACKAGE_MANAGER_INSTALLATION_IN_PROGRESS: 'Installing dependencies..',

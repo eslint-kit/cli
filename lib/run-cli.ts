@@ -65,4 +65,5 @@ export async function runCLI(): Promise<void> {
   })
 
   log(MESSAGES.COMPLETED, chalk.green)
+  log(MESSAGES.PLEASE_RESTART, [chalk.magenta, chalk.bold])
 }

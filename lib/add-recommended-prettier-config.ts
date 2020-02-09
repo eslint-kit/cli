@@ -2,13 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { FILENAMES } from './constants'
 
-interface AddRecommendedPrettierConfigParams {
-  runningPath: string
-}
-
-export function addRecommendedPrettierConfig({
-  runningPath,
-}: AddRecommendedPrettierConfigParams): void {
+export function addRecommendedPrettierConfig(): void {
   const recommendedConfig = {
     semi: false,
     singleQuote: true,
@@ -19,7 +13,7 @@ export function addRecommendedPrettierConfig({
   }
 
   fs.writeFileSync(
-    path.resolve(runningPath, FILENAMES.PRETTIER),
+    path.resolve(process.cwd(), FILENAMES.PRETTIER),
     JSON.stringify(recommendedConfig, null, 2)
   )
 }

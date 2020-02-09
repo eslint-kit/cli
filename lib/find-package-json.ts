@@ -3,18 +3,12 @@ import * as path from 'path'
 import { FILENAMES } from './constants'
 import { PackageJson } from './shared-types'
 
-interface FindPackageJsonParams {
-  runningPath: string
-}
-
-export function findPackageJson({
-  runningPath,
-}: FindPackageJsonParams): PackageJson {
+export function findPackageJson(): PackageJson {
   let json: string
 
   try {
     json = fs
-      .readFileSync(path.resolve(runningPath, FILENAMES.PACKAGE_JSON))
+      .readFileSync(path.resolve(process.cwd(), FILENAMES.PACKAGE_JSON))
       .toString()
   } catch {
     throw new Error('Cannot find package.json file in your project root')

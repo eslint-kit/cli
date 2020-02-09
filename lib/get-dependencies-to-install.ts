@@ -1,4 +1,4 @@
-import { Answers } from './shared-types'
+import { Answers, MeaningfulDependency } from './shared-types'
 import { toMap } from './util/to-map'
 
 interface GetDependenciesToInstallParams {
@@ -11,12 +11,12 @@ export function getDependenciesToInstall({
   answers,
   installedDependencies,
   useTs,
-}: GetDependenciesToInstallParams): string[] {
+}: GetDependenciesToInstallParams): MeaningfulDependency[] {
   const installedDependenciesMap = toMap(installedDependencies)
 
-  const dependencies: string[] = []
+  const dependencies: MeaningfulDependency[] = []
 
-  function add(deps: string[]): void {
+  function add(deps: MeaningfulDependency[]): void {
     for (const dep of deps) {
       if (installedDependenciesMap.has(dep)) continue
       if (dependencies.includes(dep)) continue

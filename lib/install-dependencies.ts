@@ -1,5 +1,5 @@
 import * as chalk from 'chalk'
-import { Answers } from './shared-types'
+import { Answers, MeaningfulDependency } from './shared-types'
 import { log } from './util/log'
 import { NpmPackageManager, YarnPackageManager } from './package-managers'
 import { MESSAGES } from './ui/messages'
@@ -11,7 +11,7 @@ const PACKAGE_MANAGERS = {
 
 interface InstallDependenciesParams {
   answers: Answers
-  dependencies: string[]
+  dependencies: MeaningfulDependency[]
 }
 
 export async function installDependencies({

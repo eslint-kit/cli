@@ -68,7 +68,6 @@ function getUpdatedConfig({
 
 interface UpdateEslintConfigParams {
   answers: Answers
-  runningPath: string
   packageJson: PackageJson
   eslintConfigMeta: EslintConfigMeta
   useTs: boolean
@@ -76,7 +75,6 @@ interface UpdateEslintConfigParams {
 
 export function updateEslintConfig({
   answers,
-  runningPath,
   packageJson,
   eslintConfigMeta,
   useTs,
@@ -91,7 +89,7 @@ export function updateEslintConfig({
     packageJson.eslint = updatedConfig
 
     fs.writeFileSync(
-      path.resolve(runningPath, FILENAMES.PACKAGE_JSON),
+      path.resolve(process.cwd(), FILENAMES.PACKAGE_JSON),
       JSON.stringify(packageJson, null, 2)
     )
 
@@ -100,7 +98,7 @@ export function updateEslintConfig({
 
   if (eslintConfigMeta.isYaml) {
     fs.writeFileSync(
-      path.resolve(runningPath, eslintConfigMeta.configFileName),
+      path.resolve(process.cwd(), eslintConfigMeta.configFileName),
       YAML.stringify(updatedConfig)
     )
 
@@ -108,7 +106,7 @@ export function updateEslintConfig({
   }
 
   fs.writeFileSync(
-    path.resolve(runningPath, eslintConfigMeta.configFileName),
+    path.resolve(process.cwd(), eslintConfigMeta.configFileName),
     JSON.stringify(updatedConfig, null, 2)
   )
 }

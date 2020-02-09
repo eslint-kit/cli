@@ -67,3 +67,17 @@ export interface Answers {
     meta: AliasesMeta
   }
 }
+
+export type MeaningfulDependency =
+  | 'eslint'
+  | 'eslint-config-kit'
+  | 'eslint-plugin-import'
+  | 'prettier'
+  | 'eslint-plugin-prettier'
+  | 'eslint-plugin-react'
+  | 'eslint-plugin-react-hooks'
+  | '@typescript-eslint/eslint-plugin'
+  | '@typescript-eslint/parser'
+  | 'babel-eslint'
+  | 'eslint-import-resolver-typescript'
+  | 'eslint-import-resolver-alias'

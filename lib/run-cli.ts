@@ -15,15 +15,13 @@ import { checkIfTsShouldBeUsed } from './check-if-ts-should-be-used'
 import { MESSAGES } from './ui/messages'
 
 export async function runCLI(): Promise<void> {
-  const runningPath = process.cwd()
-  const rootDirFileNames = fs.readdirSync(runningPath)
+  const rootDirFileNames = fs.readdirSync(process.cwd())
 
-  const packageJson = findPackageJson({ runningPath })
+  const packageJson = findPackageJson()
 
   const installedDependencies = getInstalledDependencies({ packageJson })
 
   const eslintConfigMeta = findEslintConfig({
-    runningPath,
     rootDirFileNames,
     packageJson,
   })
@@ -44,14 +42,13 @@ export async function runCLI(): Promise<void> {
 
   updateEslintConfig({
     answers,
-    runningPath,
     packageJson,
     eslintConfigMeta,
     useTs,
   })
 
   if (answers.addRecommendedPrettierConfig) {
-    addRecommendedPrettierConfig({ runningPath })
+    addRecommendedPrettierConfig()
   }
 
   log(MESSAGES.CONFIGS_UPDATING_SUCCEED, chalk.green)

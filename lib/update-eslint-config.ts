@@ -99,7 +99,7 @@ export function updateEslintConfig({
   if (eslintConfigMeta.isYaml) {
     fs.writeFileSync(
       path.resolve(process.cwd(), eslintConfigMeta.configFileName),
-      YAML.stringify(updatedConfig)
+      YAML.stringify(updatedConfig, Infinity, 2)
     )
 
     return

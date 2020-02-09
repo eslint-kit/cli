@@ -1,6 +1,7 @@
 import * as merge from 'deepmerge'
 import { PathGroup, Json, AliasesMeta } from '../shared-types'
-import { CustomMerge, combineMerge } from './shared'
+import { combineMerge } from './shared'
+import { CustomMerge } from './types'
 
 const tsCustomMerge: CustomMerge = key => {
   if (key === '@typescript-eslint/parser') {

@@ -1,6 +1,7 @@
 import * as merge from 'deepmerge'
 import { PathGroup, Json, AliasesMeta, AliasMapItem } from '../shared-types'
-import { CustomMerge, combineMerge } from './shared'
+import { combineMerge } from './shared'
+import { CustomMerge } from './types'
 
 const jsCustomMerge: CustomMerge = key => {
   if (key === 'map') {

@@ -17,8 +17,3 @@ export const combineMerge = (target: any, source: any, options: any): any[] => {
 
   return destination
 }
-
-export type CustomMerge = (
-  key: string,
-  options?: merge.Options
-) => ((a: any, b: any) => any) | undefined

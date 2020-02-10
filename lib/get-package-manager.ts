@@ -22,12 +22,14 @@ export function getPackageManager({
     { name: 'Yarn', value: 'yarn' },
   ]
 
-  return inquirer.prompt([
-    {
-      type: 'list',
-      name: 'packageManager',
-      message: 'Choose your package manager',
-      choices: packageManagerChoices,
-    },
-  ])
+  return inquirer
+    .prompt([
+      {
+        type: 'list',
+        name: 'packageManager',
+        message: 'Choose your package manager',
+        choices: packageManagerChoices,
+      },
+    ])
+    .then(({ packageManager }) => packageManager)
 }

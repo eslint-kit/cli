@@ -6,8 +6,9 @@
     "target": "es6",
     "skipLibCheck": true,
     "sourceMap": false,
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true
   },
-  "include": ["actions", "bin", "commands", "lib", "type-fixes"],
+  "include": ["actions", "bin", "commands", "lib", "type-fixes", "commands"],
   "exclude": ["node_modules", "e2e"],
 }

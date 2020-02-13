@@ -1,4 +1,4 @@
-import * as inquirer from 'inquirer'
+import inquirer from 'inquirer'
 import { PackageManager, Choice } from './shared-types'
 
 interface PackageManagerChoice extends Choice {
@@ -9,12 +9,12 @@ interface GetPackageManagerParams {
   rootDirFileNames: string[]
 }
 
-export function getPackageManager({
+export async function getPackageManager({
   rootDirFileNames,
 }: GetPackageManagerParams): Promise<PackageManager> {
   for (const fileName of rootDirFileNames) {
-    if (fileName === 'package-lock.json') return Promise.resolve('npm')
-    if (fileName === 'yarn.lock') return Promise.resolve('yarn')
+    if (fileName === 'package-lock.json') return 'npm'
+    if (fileName === 'yarn.lock') return 'yarn'
   }
 
   const packageManagerChoices: PackageManagerChoice[] = [

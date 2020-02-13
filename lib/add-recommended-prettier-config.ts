@@ -1,8 +1,8 @@
-import * as fs from 'fs'
-import * as path from 'path'
+import path from 'path'
 import { FILENAMES } from './constants'
+import { FileSystemReader } from './readers/file-system.reader'
 
-export function addRecommendedPrettierConfig(): void {
+export async function addRecommendedPrettierConfig(): Promise<void> {
   const recommendedConfig = {
     semi: false,
     singleQuote: true,
@@ -12,7 +12,7 @@ export function addRecommendedPrettierConfig(): void {
     endOfLine: 'lf',
   }
 
-  fs.writeFileSync(
+  return FileSystemReader.writeFile(
     path.resolve(process.cwd(), FILENAMES.PRETTIER),
     JSON.stringify(recommendedConfig, null, 2)
   )

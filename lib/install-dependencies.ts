@@ -1,4 +1,4 @@
-import * as chalk from 'chalk'
+import chalk from 'chalk'
 import { MeaningfulDependency, PackageManager } from './shared-types'
 import { log } from './util/log'
 import { NpmPackageManager, YarnPackageManager } from './package-managers'

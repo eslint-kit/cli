@@ -1,14 +1,16 @@
-import { Answers, MeaningfulDependency } from './shared-types'
+import { MeaningfulDependency, Config, AliasesMeta } from './shared-types'
 import { toMap } from './util/to-map'
 
 interface GetDependenciesToInstallParams {
-  answers: Answers
+  configs?: Config[]
+  aliases?: AliasesMeta
   installedDependencies: string[]
   useTs: boolean
 }
 
 export function getDependenciesToInstall({
-  answers,
+  configs,
+  aliases,
   installedDependencies,
   useTs,
 }: GetDependenciesToInstallParams): MeaningfulDependency[] {
@@ -24,41 +26,40 @@ export function getDependenciesToInstall({
     }
   }
 
-  const { configs, aliases } = answers
+  if (configs) {
+    const configsMap = toMap(configs)
 
-  const configsMap = toMap(configs)
+    add(['eslint'])
 
-  add(['eslint'])
+    if (configsMap.size > 0) {
+      add(['eslint-config-kit'])
+    }
 
-  if (configsMap.size > 0) {
-    add(['eslint-config-kit'])
+    if (configsMap.has('base')) {
+      add(['eslint-plugin-import'])
+    }
+
+    if (configsMap.has('prettier')) {
+      add(['prettier', 'eslint-plugin-prettier'])
+    }
+
+    if (configsMap.has('react')) {
+      add(['eslint-plugin-react', 'eslint-plugin-react-hooks'])
+    }
+
+    if (configsMap.has('typescript')) {
+      add(['@typescript-eslint/eslint-plugin', 'eslint-plugin-import'])
+    }
+
+    // Parser
+    if (configsMap.has('typescript')) {
+      add(['@typescript-eslint/parser'])
+    } else if (!useTs) {
+      add(['babel-eslint'])
+    }
   }
 
-  if (configsMap.has('base')) {
-    add(['eslint-plugin-import'])
-  }
-
-  if (configsMap.has('prettier')) {
-    add(['prettier', 'eslint-plugin-prettier'])
-  }
-
-  if (configsMap.has('react') || configsMap.has('react/performant')) {
-    add(['eslint-plugin-react', 'eslint-plugin-react-hooks'])
-  }
-
-  if (configsMap.has('typescript')) {
-    add(['@typescript-eslint/eslint-plugin', 'eslint-plugin-import'])
-  }
-
-  // Parser
-  if (configsMap.has('typescript')) {
-    add(['@typescript-eslint/parser'])
-  } else if (!useTs) {
-    add(['babel-eslint'])
-  }
-
-  // import plugin resolvers for using aliases
-  if (aliases.setup) {
+  if (aliases) {
     if (useTs) {
       add(['eslint-import-resolver-typescript'])
     } else {

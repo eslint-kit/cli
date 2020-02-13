@@ -1,3 +1,18 @@
+export type Parser = 'babel-eslint' | '@typescript-eslint/parser'
+
+export type MeaningfulDependency =
+  | Parser
+  | 'eslint'
+  | 'eslint-config-kit'
+  | 'eslint-plugin-import'
+  | 'prettier'
+  | 'eslint-plugin-prettier'
+  | 'eslint-plugin-react'
+  | 'eslint-plugin-react-hooks'
+  | '@typescript-eslint/eslint-plugin'
+  | 'eslint-import-resolver-typescript'
+  | 'eslint-import-resolver-alias'
+
 export type JsonValue =
   | undefined
   | boolean
@@ -17,18 +32,25 @@ export interface PackageJson extends Json {
   devDependencies?: Record<string, string>
 }
 
+export interface EslintConfig extends Json {
+  extends?: string | string[]
+  parser?: Parser
+  settings?: Json
+  rules?: Record<string, number | string | Json>
+}
+
 export type EslintConfigMeta =
   | {
       configFileName: string
       isPackageJson: false
       isYaml: boolean
-      content: Json
+      content: EslintConfig
     }
   | {
       configFileName: null
       isPackageJson: true
       isYaml: false
-      content: Json
+      content: EslintConfig
     }
 
 export interface PrettierConfigMeta {
@@ -48,38 +70,9 @@ export interface AliasesMeta {
   pathGroups: PathGroup[]
 }
 
-export type Config =
-  | 'base'
-  | 'prettier'
-  | 'react'
-  | 'react/performant'
-  | 'node'
-  | 'typescript'
+export type Config = 'base' | 'prettier' | 'react' | 'node' | 'typescript'
 
 export type PackageManager = 'npm' | 'yarn'
-
-export interface Answers {
-  configs: Config[]
-  addRecommendedPrettierConfig?: boolean
-  aliases: {
-    setup: boolean
-    meta: AliasesMeta
-  }
-}
-
-export type MeaningfulDependency =
-  | 'eslint'
-  | 'eslint-config-kit'
-  | 'eslint-plugin-import'
-  | 'prettier'
-  | 'eslint-plugin-prettier'
-  | 'eslint-plugin-react'
-  | 'eslint-plugin-react-hooks'
-  | '@typescript-eslint/eslint-plugin'
-  | '@typescript-eslint/parser'
-  | 'babel-eslint'
-  | 'eslint-import-resolver-typescript'
-  | 'eslint-import-resolver-alias'
 
 export interface Choice {
   name: string

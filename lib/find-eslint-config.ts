@@ -1,9 +1,9 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import * as YAML from 'yamljs'
+import path from 'path'
+import YAML from 'yamljs'
 import { Json, EslintConfigMeta, PackageJson } from './shared-types'
 import { arrayToString } from './util/array-to-string'
 import { FILENAMES } from './constants'
+import { FileSystemReader } from './readers/file-system.reader'
 
 const unsupportedConfigFileNames = ['.eslintrc.js', '.eslintrc.cjs']
 
@@ -21,10 +21,10 @@ interface FindEslintConfigParams {
   packageJson: PackageJson
 }
 
-export function findEslintConfig({
+export async function findEslintConfig({
   rootDirFileNames,
   packageJson,
-}: FindEslintConfigParams): EslintConfigMeta {
+}: FindEslintConfigParams): Promise<EslintConfigMeta> {
   const configFileName = configFileNames.find(configFileName => {
     return rootDirFileNames.some(fileName => fileName === configFileName)
   })
@@ -95,7 +95,8 @@ export function findEslintConfig({
     }
   }
 
-  const content = JSON.parse(fs.readFileSync(configPath).toString())
+  const buffer = await FileSystemReader.readFile(configPath)
+  const content = JSON.parse(buffer.toString())
 
   return {
     configFileName,

@@ -1,15 +1,17 @@
-import * as fs from 'fs'
-import * as path from 'path'
+import path from 'path'
 import { FILENAMES } from './constants'
 import { PackageJson } from './shared-types'
+import { FileSystemReader } from './readers/file-system.reader'
 
-export function findPackageJson(): PackageJson {
+export async function findPackageJson(): Promise<PackageJson> {
   let json: string
 
   try {
-    json = fs
-      .readFileSync(path.resolve(process.cwd(), FILENAMES.PACKAGE_JSON))
-      .toString()
+    const buffer = await FileSystemReader.readFile(
+      path.resolve(process.cwd(), FILENAMES.PACKAGE_JSON)
+    )
+
+    json = buffer.toString()
   } catch {
     throw new Error('Cannot find package.json file in your project root')
   }

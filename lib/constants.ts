@@ -14,10 +14,9 @@ export enum DEPENDENCIES {
 export const CONFIG_PREFIX = 'kit/'
 
 export const CONFIG_PRIORITIES: Record<Config, number> = {
-  'base': 1,
-  'typescript': 2,
-  'node': 3,
-  'react': 4,
-  'react/performant': 5,
-  'prettier': 6,
+  base: 1,
+  typescript: 2,
+  node: 3,
+  react: 4,
+  prettier: 5,
 }

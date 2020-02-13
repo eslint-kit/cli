@@ -43,7 +43,7 @@ export function getDependenciesToInstall({
       add(['prettier', 'eslint-plugin-prettier'])
     }
 
-    if (configsMap.has('react') || configsMap.has('react/performant')) {
+    if (configsMap.has('react')) {
       add(['eslint-plugin-react', 'eslint-plugin-react-hooks'])
     }
 

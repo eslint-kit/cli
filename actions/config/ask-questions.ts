@@ -22,7 +22,6 @@ export function askQuestions({
     { name: 'Base', value: 'base', checked: true },
     { name: 'Prettier', value: 'prettier' },
     { name: 'React', value: 'react' },
-    { name: 'React (performant)', value: 'react/performant' },
     { name: 'Node', value: 'node' },
     { name: 'TypeScript', value: 'typescript' },
   ]
@@ -38,13 +37,6 @@ export function askQuestions({
       name: 'configs',
       message: 'What configs you want to add?',
       choices: availableConfigChoices,
-      validate: (configs: Config[]) => {
-        if (configs.includes('react') && configs.includes('react/performant')) {
-          return '"React" and "React (performant)" configs cannot be chosen together'
-        }
-
-        return true
-      },
     },
     {
       type: 'confirm',

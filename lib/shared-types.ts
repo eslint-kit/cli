@@ -70,13 +70,7 @@ export interface AliasesMeta {
   pathGroups: PathGroup[]
 }
 
-export type Config =
-  | 'base'
-  | 'prettier'
-  | 'react'
-  | 'react/performant'
-  | 'node'
-  | 'typescript'
+export type Config = 'base' | 'prettier' | 'react' | 'node' | 'typescript'
 
 export type PackageManager = 'npm' | 'yarn'
 

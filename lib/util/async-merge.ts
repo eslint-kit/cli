@@ -28,13 +28,15 @@ export function asyncMerge<T extends Function>(fn: T): T {
       return result
     }
 
-    const job = result
+    const job: Promise<any> = result
 
     processingJobsMap.set(jobKey, job)
 
-    job.finally(() => {
+    const clean = (): void => {
       processingJobsMap.delete(jobKey)
-    })
+    }
+
+    job.then(clean).catch(clean)
 
     return job
   }

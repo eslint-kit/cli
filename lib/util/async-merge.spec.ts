@@ -60,4 +60,20 @@ describe('wrapIntoAsyncMerge', () => {
     await firstPromise
     await secondPromise
   })
+
+  it('should do not catch errors', async done => {
+    const fn = (): Promise<never> => Promise.reject('hello')
+
+    const wrappedFn = asyncMerge(fn)
+
+    try {
+      await wrappedFn()
+
+      done.fail('asyncMerge caught the error')
+    } catch (err) {
+      expect(err).toBe('hello')
+    }
+
+    done()
+  })
 })

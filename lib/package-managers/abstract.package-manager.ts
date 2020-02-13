@@ -25,6 +25,8 @@ export abstract class AbstractPackageManager {
     dependencies: string[],
     saveType?: SaveType
   ): Promise<void> {
+    log(MESSAGES.PACKAGE_MANAGER_INSTALLATION_WARNING, [chalk.red, chalk.bold])
+
     const spinner = ora({
       spinner: 'dots',
       prefixText: '\n',

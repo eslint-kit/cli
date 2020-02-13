@@ -8,6 +8,8 @@ export const MESSAGES = {
     'Please restart your IDE/editor to make sure everything works properly',
   DEPENDENCIES_ALREADY_INSTALLED:
     'All dependencies are already installed! Skipping..',
+  PACKAGE_MANAGER_INSTALLATION_WARNING:
+    "Please don't touch package.json during the dependencies installation",
   PACKAGE_MANAGER_INSTALLATION_IN_PROGRESS: 'Installing dependencies..',
   PACKAGE_MANAGER_INSTALLATION_SUCCEED: 'Successfully installed dependencies',
   PACKAGE_MANAGER_INSTALLATION_FAILED: 'Packages installation failed',

@@ -36,8 +36,25 @@ $ npm i -g @eslint-kit/cli
 
 ## Usage
 
+- [Manage configs](#manage-configs)
+- [Setup aliases](#setup-aliases)
+
+### Manage configs
+
 ```
 $ eslint-kit
+```
+
+or
+
+```
+$ eslint-kit config
+```
+
+### Setup aliases
+
+```
+$ eslint-kit alias
 ```
 
 Learn more about `eslint-kit` [here](https://github.com/eslint-kit/eslint-config-kit).

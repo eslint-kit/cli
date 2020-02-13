@@ -1,15 +1,24 @@
 #!/usr/bin/env node
 
-import * as chalk from 'chalk'
-import { runCLI } from '../lib/run-cli'
-import { log } from '../lib/util/log'
+import commander from 'commander'
+import { ConfigCommand, AliasCommand } from '../commands'
 
-async function bootstrap(): Promise<void> {
-  try {
-    await runCLI()
-  } catch (error) {
-    log(error.message, chalk.red)
-  }
+function bootstrap(): void {
+  const program = commander
+
+  program
+    .version(
+      require('../package.json').version,
+      '-v --version',
+      'Output the current version'
+    )
+    .usage('<command>')
+    .helpOption('-h --help', 'Output usage information')
+
+  ConfigCommand.load(program)
+  AliasCommand.load(program)
+
+  commander.parse(process.argv)
 }
 
 bootstrap()

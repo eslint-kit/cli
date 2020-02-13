@@ -1,23 +1,10 @@
-import * as merge from 'deepmerge'
-import { PathGroup, Json, AliasesMeta, AliasMapItem } from '../shared-types'
+import merge from 'deepmerge'
+import { PathGroup, Json, AliasesMeta } from '../../../lib/shared-types'
 import { combineMerge } from './shared'
 import { CustomMerge } from './types'
 
-const jsCustomMerge: CustomMerge = key => {
-  if (key === 'map') {
-    return (a: AliasMapItem[], b: AliasMapItem[]) => {
-      const existingAliasNames = a.map(([aliasName]) => aliasName)
-
-      const newMapItems = b.filter(mapItem => {
-        const [aliasName] = mapItem
-        return !existingAliasNames.includes(aliasName)
-      })
-
-      return [...a, ...newMapItems]
-    }
-  }
-
-  if (key === 'extensions') {
+const tsCustomMerge: CustomMerge = key => {
+  if (key === '@typescript-eslint/parser') {
     return (a: string[], b: string[]) => {
       return Array.from(new Set([...a, ...b]))
     }
@@ -27,7 +14,7 @@ const jsCustomMerge: CustomMerge = key => {
     return (a, b) =>
       merge(a, b, {
         arrayMerge: combineMerge,
-        customMerge: jsCustomMerge,
+        customMerge: tsCustomMerge,
       })
   }
 
@@ -50,15 +37,17 @@ const jsCustomMerge: CustomMerge = key => {
   return undefined
 }
 
-export const jsAliasesAdder = (currentConfig: Json, meta: AliasesMeta): Json =>
+export const tsAliasesAdder = (currentConfig: Json, meta: AliasesMeta): Json =>
   merge(
     currentConfig,
     {
       settings: {
+        'import/parsers': {
+          '@typescript-eslint/parser': ['.ts', '.tsx'],
+        },
         'import/resolver': {
-          alias: {
-            map: meta.aliasMap,
-            extensions: ['.js', '.jsx', '.json'],
+          typescript: {
+            alwaysTryTypes: true,
           },
         },
       },
@@ -79,5 +68,5 @@ export const jsAliasesAdder = (currentConfig: Json, meta: AliasesMeta): Json =>
         ],
       },
     },
-    { customMerge: jsCustomMerge }
+    { customMerge: tsCustomMerge }
   )

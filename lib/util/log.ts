@@ -1,4 +1,4 @@
-import * as chalk from 'chalk'
+import chalk from 'chalk'
 
 type Color = chalk.Chalk | chalk.Chalk[]
 

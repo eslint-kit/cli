@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import * as merge from 'deepmerge'
+import merge from 'deepmerge'
 
 export const combineMerge = (target: any, source: any, options: any): any[] => {
   const destination = target.slice()

@@ -1,11 +1,11 @@
-import { readFile } from 'fs'
-import { join } from 'path'
-import * as ora from 'ora'
-import * as chalk from 'chalk'
+import path from 'path'
+import ora from 'ora'
+import chalk from 'chalk'
 import { AbstractRunner } from '../runners/abstract.runner'
 import { log } from '../util/log'
 import { PackageJson } from '../shared-types'
 import { MESSAGES } from '../ui/messages'
+import { FileSystemReader } from '../readers/file-system.reader'
 import { PackageManagerCommands } from './types'
 
 type SaveType = 'prod' | 'dev'
@@ -116,17 +116,10 @@ export abstract class AbstractPackageManager {
   }
 
   private async readPackageJson(): Promise<PackageJson> {
-    return new Promise((resolve, reject) => {
-      readFile(
-        join(process.cwd(), 'package.json'),
-        (error: NodeJS.ErrnoException | null, buffer: Buffer) => {
-          if (error !== undefined && error !== null) {
-            reject(error)
-          } else {
-            resolve(JSON.parse(buffer.toString()))
-          }
-        }
-      )
-    })
+    const buffer = await FileSystemReader.readFile(
+      path.join(process.cwd(), 'package.json')
+    )
+
+    return JSON.parse(buffer.toString())
   }
 }

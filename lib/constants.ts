@@ -6,9 +6,9 @@ export const FILENAMES = {
   PACKAGE_JSON: 'package.json',
 }
 
-export const DEPENDENCIES = {
-  BABEL_PARSER: 'babel-eslint',
-  TS_PARSER: '@typescript-eslint/parser',
+export enum DEPENDENCIES {
+  BABEL_PARSER = 'babel-eslint',
+  TS_PARSER = '@typescript-eslint/parser',
 }
 
 export const CONFIG_PREFIX = 'kit/'

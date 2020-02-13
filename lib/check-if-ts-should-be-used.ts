@@ -1,16 +1,16 @@
-import { Answers, Config } from './shared-types'
+import { Config } from './shared-types'
 import { DEPENDENCIES } from './constants'
 
 interface CheckIfTsShouldBeUsedParams {
   installedDependencies: string[]
   installedConfigs: Config[]
-  answers: Answers
+  addedConfigs?: Config[]
 }
 
 export function checkIfTsShouldBeUsed({
   installedDependencies,
   installedConfigs,
-  answers,
+  addedConfigs,
 }: CheckIfTsShouldBeUsedParams): boolean {
   const hasTsParser = installedDependencies.includes(DEPENDENCIES.TS_PARSER)
 
@@ -20,9 +20,11 @@ export function checkIfTsShouldBeUsed({
 
   if (hasTsConfig) return true
 
-  const willInstallTsConfig = answers.configs.includes('typescript')
+  if (addedConfigs) {
+    const willInstallTsConfig = addedConfigs.includes('typescript')
 
-  if (willInstallTsConfig) return true
+    if (willInstallTsConfig) return true
+  }
 
   return false
 }

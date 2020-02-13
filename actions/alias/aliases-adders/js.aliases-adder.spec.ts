@@ -1,7 +1,7 @@
-import { Json, AliasesMeta } from '../shared-types'
-import { tsAliasesAdder } from './ts.aliases-adder'
+import { Json, AliasesMeta } from '../../../lib/shared-types'
+import { jsAliasesAdder } from './js.aliases-adder'
 
-describe('tsAliasesAdder', () => {
+describe('jsAliasesAdder', () => {
   it('should successfully add aliases when currentConfig is empty', () => {
     const currentConfig: Json = {}
 
@@ -23,12 +23,10 @@ describe('tsAliasesAdder', () => {
 
     const expectedResult: Json = {
       settings: {
-        'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
-        },
         'import/resolver': {
-          typescript: {
-            alwaysTryTypes: true,
+          alias: {
+            map: [['@app', './src']],
+            extensions: ['.js', '.jsx', '.json'],
           },
         },
       },
@@ -61,18 +59,16 @@ describe('tsAliasesAdder', () => {
       },
     }
 
-    expect(tsAliasesAdder(currentConfig, aliasesMeta)).toEqual(expectedResult)
+    expect(jsAliasesAdder(currentConfig, aliasesMeta)).toEqual(expectedResult)
   })
 
   it('should successfully add aliases when currentConfig already has aliases', () => {
     const currentConfig: Json = {
       settings: {
-        'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
-        },
         'import/resolver': {
-          typescript: {
-            alwaysTryTypes: true,
+          alias: {
+            map: [['@app', './src']],
+            extensions: ['.js', '.jsx', '.json'],
           },
         },
       },
@@ -123,12 +119,13 @@ describe('tsAliasesAdder', () => {
 
     const expectedResult: Json = {
       settings: {
-        'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
-        },
         'import/resolver': {
-          typescript: {
-            alwaysTryTypes: true,
+          alias: {
+            map: [
+              ['@app', './src'],
+              ['@folder', './src/folder'],
+            ],
+            extensions: ['.js', '.jsx', '.json'],
           },
         },
       },
@@ -171,7 +168,7 @@ describe('tsAliasesAdder', () => {
       },
     }
 
-    expect(tsAliasesAdder(currentConfig, aliasesMeta)).toEqual(expectedResult)
+    expect(jsAliasesAdder(currentConfig, aliasesMeta)).toEqual(expectedResult)
   })
 
   it('should successfully add aliases when currentConfig already has some import plugin settings/rules', () => {
@@ -181,13 +178,11 @@ describe('tsAliasesAdder', () => {
 
     currentConfig = {
       settings: {
-        'import/parsers': {
-          'my-parser': ['.sdfdsf'],
-        },
         'import/resolver': {
-          typescript: {
-            setting: false,
+          alias: {
+            extensions: ['.js', '.jsx', '.json'],
           },
+          something: 123,
         },
       },
       rules: {
@@ -213,15 +208,12 @@ describe('tsAliasesAdder', () => {
 
     expectedResult = {
       settings: {
-        'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
-          'my-parser': ['.sdfdsf'],
-        },
         'import/resolver': {
-          typescript: {
-            alwaysTryTypes: true,
-            setting: false,
+          alias: {
+            map: [['@folder', './src/folder']],
+            extensions: ['.js', '.jsx', '.json'],
           },
+          something: 123,
         },
       },
       rules: {
@@ -253,15 +245,14 @@ describe('tsAliasesAdder', () => {
       },
     }
 
-    expect(tsAliasesAdder(currentConfig, aliasesMeta)).toEqual(expectedResult)
+    expect(jsAliasesAdder(currentConfig, aliasesMeta)).toEqual(expectedResult)
 
     currentConfig = {
       settings: {
-        'import/parsers': {
-          '@typescript-eslint/parser': ['.ts'],
-        },
         'import/resolver': {
-          hello: 'hi',
+          alias: {
+            extensions: ['.js', '.jsx'],
+          },
         },
         'other': {
           test: 4324,
@@ -302,14 +293,11 @@ describe('tsAliasesAdder', () => {
 
     expectedResult = {
       settings: {
-        'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
-        },
         'import/resolver': {
-          typescript: {
-            alwaysTryTypes: true,
+          alias: {
+            map: [['@folder', './src/folder']],
+            extensions: ['.js', '.jsx', '.json'],
           },
-          hello: 'hi',
         },
         'other': {
           test: 4324,
@@ -344,6 +332,6 @@ describe('tsAliasesAdder', () => {
       },
     }
 
-    expect(tsAliasesAdder(currentConfig, aliasesMeta)).toEqual(expectedResult)
+    expect(jsAliasesAdder(currentConfig, aliasesMeta)).toEqual(expectedResult)
   })
 })

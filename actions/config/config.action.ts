@@ -40,7 +40,8 @@ export class ConfigAction {
       {
         useTs: true,
       },
-      { installedDependencies, installedConfigs, addedConfigs }
+      { installedDependencies, installedConfigs },
+      { addedConfigs }
     )
 
     const updatedConfig = getUpdatedEslintConfig({

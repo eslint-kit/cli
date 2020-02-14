@@ -43,11 +43,16 @@ interface Data {
   useTs: boolean
 }
 
+interface ProvidedDependencies {
+  addedConfigs: Config[]
+}
+
 type ResolutionConfig = {
   [K in keyof Data]: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: (...args: any[]) => Data[K] | Promise<Data[K]>
     dependencies?: Keys<Omit<Data, K>>
+    fromProvidedDependencies?: Keys<ProvidedDependencies>
   }
 }
 
@@ -81,6 +86,7 @@ const resolutionConfig: ResolutionConfig = {
   useTs: {
     resolver: checkIfTsShouldBeUsed,
     dependencies: ['installedDependencies', 'installedConfigs'],
+    fromProvidedDependencies: ['addedConfigs'],
   },
 }
 
@@ -100,9 +106,17 @@ type DataBySchema<T, K extends Schema<T>> = Pick<
 async function getDataBySchemaInternal<
   S extends Schema<Data>,
   D extends DataBySchema<Data, S>
->(schema: S, results: Partial<Async<Data>>): Promise<D> {
+>(
+  schema: S,
+  results: Partial<Async<Data>>,
+  providedDependencies: Partial<ProvidedDependencies>
+): Promise<D> {
   const resolve = async (name: keyof Data): Promise<void> => {
-    const { resolver, dependencies = [] } = resolutionConfig[name]
+    const {
+      resolver,
+      dependencies = [],
+      fromProvidedDependencies = [],
+    } = resolutionConfig[name]
 
     if (name in results) {
       return
@@ -116,9 +130,20 @@ async function getDataBySchemaInternal<
 
     ;(results[name] as unknown) = getDataBySchemaInternal(
       dependenciesSchema,
-      results
+      results,
+      providedDependencies
     ).then(resolverInput => {
-      return resolver(resolverInput)
+      const requestedProvidedDependencies: Partial<ProvidedDependencies> = {}
+
+      for (const dependency of fromProvidedDependencies) {
+        requestedProvidedDependencies[dependency] =
+          providedDependencies[dependency]
+      }
+
+      return resolver({
+        ...requestedProvidedDependencies,
+        ...resolverInput,
+      })
     })
   }
 
@@ -135,8 +160,8 @@ export function getDataBySchema<
   D extends DataBySchema<Data, S>
 >(
   schema: S,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resolvedResults: Record<string, any> = {}
+  resolvedResults: Partial<Data> = {},
+  providedDependencies: Partial<ProvidedDependencies> = {}
 ): Promise<D> {
-  return getDataBySchemaInternal(schema, resolvedResults)
+  return getDataBySchemaInternal(schema, resolvedResults, providedDependencies)
 }

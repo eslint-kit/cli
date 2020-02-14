@@ -122,11 +122,6 @@ async function getDataBySchemaInternal<
     })
   }
 
-  // packageJson +
-  // eslintConfigMeta +
-  // rootDirFileNames +
-  // installedDependencies +
-
   for (const field in schema) {
     if (!schema[field]) continue
     resolve(field as keyof Data)
@@ -138,6 +133,10 @@ async function getDataBySchemaInternal<
 export function getDataBySchema<
   S extends Schema<Data>,
   D extends DataBySchema<Data, S>
->(schema: S, resolvedResults: Partial<Data> = {}): Promise<D> {
+>(
+  schema: S,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  resolvedResults: Record<string, any> = {}
+): Promise<D> {
   return getDataBySchemaInternal(schema, resolvedResults)
 }

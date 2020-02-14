@@ -18,7 +18,6 @@ export class ConfigAction {
       prettierConfigMeta,
       installedConfigs,
       installedDependencies,
-      useTs,
       packageManager,
     } = await getDataBySchema({
       packageJson: true,
@@ -26,7 +25,6 @@ export class ConfigAction {
       prettierConfigMeta: true,
       installedConfigs: true,
       installedDependencies: true,
-      useTs: true,
       packageManager: true,
     })
 
@@ -37,6 +35,13 @@ export class ConfigAction {
       prettierConfigMeta,
       installedConfigs,
     })
+
+    const { useTs } = await getDataBySchema(
+      {
+        useTs: true,
+      },
+      { installedDependencies, installedConfigs, addedConfigs }
+    )
 
     const updatedConfig = getUpdatedEslintConfig({
       eslintConfigMeta,

@@ -36,7 +36,7 @@ export function getDependenciesToInstall({
     }
 
     if (configsMap.has('base')) {
-      add(['eslint-plugin-import'])
+      add(['eslint-plugin-import', 'eslint-plugin-unicorn'])
     }
 
     if (configsMap.has('prettier')) {

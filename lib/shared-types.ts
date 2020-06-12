@@ -5,6 +5,7 @@ export type MeaningfulDependency =
   | 'eslint'
   | 'eslint-config-kit'
   | 'eslint-plugin-import'
+  | 'eslint-plugin-unicorn'
   | 'prettier'
   | 'eslint-plugin-prettier'
   | 'eslint-plugin-react'

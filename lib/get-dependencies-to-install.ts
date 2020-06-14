@@ -34,7 +34,8 @@ export function getDependenciesToInstall({
 
     const configDependencies = Array.from(
       configsMap.keys(),
-      configName => (CONFIG_PREFIX + configName) as MeaningfulDependency
+      configName =>
+        (CONFIG_PREFIX + 'eslint-config-' + configName) as MeaningfulDependency
     )
 
     add(configDependencies)

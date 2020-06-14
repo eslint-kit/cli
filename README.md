@@ -28,13 +28,22 @@ It can:
 
 - Create recommended `.prettierrc` for `kit/prettier` config.
 
-## Installation
-
-```
-$ npm i -g @eslint-kit/cli
-```
-
 ## Usage
+
+Using npx (recommended):
+
+```sh
+npx @eslint-kit/cli
+```
+
+Installing globally (it's good in rare cases):
+
+```sh
+npm i -g @eslint-kit/cli
+eslint-kit
+```
+
+## Commands
 
 - [Manage configs](#manage-configs)
 - [Setup aliases](#setup-aliases)

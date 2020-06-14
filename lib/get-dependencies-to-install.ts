@@ -1,5 +1,6 @@
 import { MeaningfulDependency, Config, AliasesMeta } from './shared-types'
 import { toMap } from './util/to-map'
+import { CONFIG_PREFIX } from './constants'
 
 interface GetDependenciesToInstallParams {
   configs?: Config[]
@@ -31,24 +32,15 @@ export function getDependenciesToInstall({
 
     add(['eslint'])
 
-    if (configsMap.size > 0) {
-      add(['eslint-config-kit'])
-    }
+    const configDependencies = Array.from(
+      configsMap.keys(),
+      configName => (CONFIG_PREFIX + configName) as MeaningfulDependency
+    )
 
-    if (configsMap.has('base')) {
-      add(['eslint-plugin-import', 'eslint-plugin-unicorn'])
-    }
+    add(configDependencies)
 
     if (configsMap.has('prettier')) {
-      add(['prettier', 'eslint-plugin-prettier'])
-    }
-
-    if (configsMap.has('react')) {
-      add(['eslint-plugin-react', 'eslint-plugin-react-hooks'])
-    }
-
-    if (configsMap.has('typescript')) {
-      add(['@typescript-eslint/eslint-plugin', 'eslint-plugin-import'])
+      add(['prettier'])
     }
 
     // Parser

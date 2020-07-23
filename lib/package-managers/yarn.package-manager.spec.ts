@@ -70,7 +70,7 @@ describe('YarnPackageManager', () => {
       expect(spy).toBeCalledWith('remove one two --silent', true)
 
       await packageManager.uninstall(['one', 'two'], 'dev')
-      expect(spy).toBeCalledWith('remove -D one two --silent', true)
+      expect(spy).toBeCalledWith('remove one two --silent', true)
     })
   })
 })

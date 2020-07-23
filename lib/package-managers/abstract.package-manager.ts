@@ -10,14 +10,35 @@ import { PackageManagerCommands } from './types'
 
 type SaveType = 'prod' | 'dev'
 
+interface Options {
+  useFlagForInstall: boolean
+  useFlagForUninstall: boolean
+}
+
+const DEFAULT_OPTIONS: Options = {
+  useFlagForInstall: true,
+  useFlagForUninstall: true,
+}
+
 export abstract class AbstractPackageManager {
-  constructor(protected runner: AbstractRunner) {}
+  constructor(
+    protected runner: AbstractRunner,
+    protected customOptions: Partial<Options> = {}
+  ) {
+    this.options = {
+      ...DEFAULT_OPTIONS,
+      ...customOptions,
+    }
+  }
+
+  private options: Options
 
   public abstract get cli(): PackageManagerCommands
 
   private async manageDependencies(
     command: string,
     messages: {
+      warning: string
       progress: string
       succeed: string
       failed: string
@@ -25,7 +46,7 @@ export abstract class AbstractPackageManager {
     dependencies: string[],
     saveType?: SaveType
   ): Promise<void> {
-    log(MESSAGES.PACKAGE_MANAGER_INSTALLATION_WARNING, [chalk.red, chalk.bold])
+    log(messages.warning, [chalk.red, chalk.bold])
 
     const spinner = ora({
       spinner: 'dots',
@@ -76,12 +97,13 @@ export abstract class AbstractPackageManager {
     return this.manageDependencies(
       this.cli.install,
       {
+        warning: MESSAGES.PACKAGE_MANAGER_INSTALLATION_WARNING,
         progress: MESSAGES.PACKAGE_MANAGER_INSTALLATION_IN_PROGRESS,
         succeed: MESSAGES.PACKAGE_MANAGER_INSTALLATION_SUCCEED,
         failed: MESSAGES.PACKAGE_MANAGER_INSTALLATION_FAILED,
       },
       dependencies,
-      saveType
+      this.options.useFlagForInstall ? saveType : undefined
     )
   }
 
@@ -92,12 +114,13 @@ export abstract class AbstractPackageManager {
     return this.manageDependencies(
       this.cli.uninstall,
       {
+        warning: MESSAGES.PACKAGE_MANAGER_UNINSTALLATION_WARNING,
         progress: MESSAGES.PACKAGE_MANAGER_UNINSTALLATION_IN_PROGRESS,
         succeed: MESSAGES.PACKAGE_MANAGER_UNINSTALLATION_SUCCEED,
         failed: MESSAGES.PACKAGE_MANAGER_UNINSTALLATION_FAILED,
       },
       dependencies,
-      saveType
+      this.options.useFlagForUninstall ? saveType : undefined
     )
   }
 

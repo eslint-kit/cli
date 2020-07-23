@@ -1,6 +1,8 @@
 import { Config } from '../../lib/shared-types'
 
 export interface Answers {
-  configs: Config[]
+  updatedConfigs: Config[]
+  addedConfigs: Config[]
+  deletedConfigs: Config[]
   shouldAddRecommendedPrettierConfig?: boolean
 }

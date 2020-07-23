@@ -38,7 +38,7 @@
     "chalk": "^3.0.0",
     "commander": "^5.0.0-2",
     "deepmerge": "^4.2.2",
-    "inquirer": "7.0.4",
+    "inquirer": "^7.3.2",
     "mem": "^6.0.1",
     "nanoid": "^2.1.11",
     "ora": "^4.0.3",

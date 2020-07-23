@@ -4,7 +4,9 @@ import { PackageManagerCommands } from './types'
 
 export class YarnPackageManager extends AbstractPackageManager {
   constructor() {
-    super(new YarnRunner())
+    super(new YarnRunner(), {
+      useFlagForUninstall: false,
+    })
   }
 
   get cli(): PackageManagerCommands {

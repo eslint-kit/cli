@@ -155,13 +155,10 @@ async function getDataBySchemaInternal<
   return unpromisify(results)
 }
 
-export function getDataBySchema<
-  S extends Schema<Data>,
-  D extends DataBySchema<Data, S>
->(
+export function getDataBySchema<S extends Schema<Data>>(
   schema: S,
   resolvedResults: Partial<Data> = {},
   providedDependencies: Partial<ProvidedDependencies> = {}
-): Promise<D> {
+): Promise<DataBySchema<Data, S>> {
   return getDataBySchemaInternal(schema, resolvedResults, providedDependencies)
 }

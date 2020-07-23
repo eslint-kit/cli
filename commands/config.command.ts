@@ -5,7 +5,7 @@ export class ConfigCommand {
   static load(program: CommanderStatic): void {
     program
       .command('config', { isDefault: true })
-      .description('Add / edit eslint configs')
+      .description('Manage eslint configs')
       .action(ConfigAction.handle)
   }
 }

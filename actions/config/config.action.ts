@@ -1,11 +1,15 @@
 import chalk from 'chalk'
-import { getDataBySchema } from '../../lib/get-data-by-schema'
 import { updateEslintConfig } from '../../lib/update-eslint-config'
 import { log } from '../../lib/util/log'
 import { MESSAGES } from '../../lib/ui/messages'
 import { addRecommendedPrettierConfig } from '../../lib/add-recommended-prettier-config'
 import { getDependenciesToInstall } from '../../lib/get-dependencies-to-install'
-import { installDependencies } from '../../lib/install-dependencies'
+import {
+  installDependencies,
+  deleteDependencies,
+} from '../../lib/dependencies-work'
+import { getDataBySchema } from '../../lib/get-data-by-schema'
+import { getDependenciesToDelete } from '../../lib/get-dependencies-to-delete'
 import { askQuestions } from './ask-questions'
 import { getUpdatedEslintConfig } from './get-updated-eslint-config'
 import { LOCAL_MESSAGES } from './ui/local-messages'
@@ -29,7 +33,9 @@ export class ConfigAction {
     })
 
     const {
-      configs: addedConfigs,
+      updatedConfigs,
+      addedConfigs,
+      deletedConfigs,
       shouldAddRecommendedPrettierConfig,
     } = await askQuestions({
       prettierConfigMeta,
@@ -46,7 +52,7 @@ export class ConfigAction {
 
     const updatedConfig = getUpdatedEslintConfig({
       eslintConfigMeta,
-      addedConfigs,
+      updatedConfigs,
       useTs,
     })
 
@@ -66,9 +72,19 @@ export class ConfigAction {
       useTs,
     })
 
+    const dependenciesToDelete = getDependenciesToDelete({
+      configs: deletedConfigs,
+      installedDependencies,
+    })
+
     await installDependencies({
       packageManager,
       dependencies: dependenciesToInstall,
+    })
+
+    await deleteDependencies({
+      packageManager,
+      dependencies: dependenciesToDelete,
     })
 
     log(LOCAL_MESSAGES.FINISHED, chalk.green)

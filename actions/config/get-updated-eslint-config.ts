@@ -19,13 +19,13 @@ function byPriority(a: string, b: string): number {
 
 interface GetUpdateConfigParams {
   eslintConfigMeta: EslintConfigMeta
-  addedConfigs: Config[]
+  updatedConfigs: Config[]
   useTs: boolean
 }
 
 export function getUpdatedEslintConfig({
   eslintConfigMeta,
-  addedConfigs,
+  updatedConfigs,
   useTs,
 }: GetUpdateConfigParams): Json {
   const { content } = eslintConfigMeta
@@ -40,11 +40,12 @@ export function getUpdatedEslintConfig({
     updatedConfig.extends = [updatedConfig.extends]
   }
 
-  const addedExtends = addedConfigs.map(
+  const addedExtends = updatedConfigs.map(
     configName => CONFIG_PREFIX + configName
   )
 
   updatedConfig.extends = updatedConfig.extends
+    .filter(config => !isFromConfigKit(config))
     .concat(addedExtends)
     .sort(byPriority)
 

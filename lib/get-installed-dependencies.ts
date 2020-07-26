@@ -12,5 +12,12 @@ export function getInstalledDependencies({
   const dependenciesNames = Object.keys(dependencies)
   const devDependenciesNames = Object.keys(devDependencies)
 
-  return [...dependenciesNames, ...devDependenciesNames]
+  const allDependenciesNames = [...dependenciesNames, ...devDependenciesNames]
+
+  // fix for create-react-app
+  if (allDependenciesNames.includes('react-scripts')) {
+    allDependenciesNames.push('eslint', 'babel-eslint')
+  }
+
+  return allDependenciesNames
 }

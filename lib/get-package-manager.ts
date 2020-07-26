@@ -23,7 +23,7 @@ export async function getPackageManager({
   ]
 
   return inquirer
-    .prompt([
+    .prompt<{ packageManager: PackageManager }>([
       {
         type: 'list',
         name: 'packageManager',

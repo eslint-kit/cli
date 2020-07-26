@@ -7,7 +7,7 @@ interface Answers {
 }
 
 export function askQuestions(): Promise<Answers> {
-  return inquirer.prompt([
+  return inquirer.prompt<Answers>([
     {
       type: 'editor',
       name: 'aliasesMeta',

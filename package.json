@@ -1,6 +1,6 @@
 {
   "name": "@eslint-kit/cli",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A cli tool for eslint-config-kit",
   "keywords": [
     "eslint",

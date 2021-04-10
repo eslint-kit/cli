@@ -1,3 +1,4 @@
+import { DEPENDENCIES } from '../../../lib/constants'
 import { Json, AliasesMeta } from '../../../lib/shared-types'
 import { tsAliasesAdder } from './ts.aliases-adder'
 
@@ -24,7 +25,7 @@ describe('tsAliasesAdder', () => {
     const expectedResult: Json = {
       settings: {
         'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
+          [DEPENDENCIES.TS_PARSER]: ['.ts', '.tsx'],
         },
         'import/resolver': {
           typescript: {
@@ -68,7 +69,7 @@ describe('tsAliasesAdder', () => {
     const currentConfig: Json = {
       settings: {
         'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
+          [DEPENDENCIES.TS_PARSER]: ['.ts', '.tsx'],
         },
         'import/resolver': {
           typescript: {
@@ -124,7 +125,7 @@ describe('tsAliasesAdder', () => {
     const expectedResult: Json = {
       settings: {
         'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
+          [DEPENDENCIES.TS_PARSER]: ['.ts', '.tsx'],
         },
         'import/resolver': {
           typescript: {
@@ -214,7 +215,7 @@ describe('tsAliasesAdder', () => {
     expectedResult = {
       settings: {
         'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
+          [DEPENDENCIES.TS_PARSER]: ['.ts', '.tsx'],
           'my-parser': ['.sdfdsf'],
         },
         'import/resolver': {
@@ -258,7 +259,7 @@ describe('tsAliasesAdder', () => {
     currentConfig = {
       settings: {
         'import/parsers': {
-          '@typescript-eslint/parser': ['.ts'],
+          [DEPENDENCIES.TS_PARSER]: ['.ts'],
         },
         'import/resolver': {
           hello: 'hi',
@@ -303,7 +304,7 @@ describe('tsAliasesAdder', () => {
     expectedResult = {
       settings: {
         'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
+          [DEPENDENCIES.TS_PARSER]: ['.ts', '.tsx'],
         },
         'import/resolver': {
           typescript: {

@@ -1,5 +1,6 @@
 import { PackageJson } from './shared-types'
 import { getInstalledDependencies } from './get-installed-dependencies'
+import { DEPENDENCIES } from './constants'
 
 describe('getInstalledDependencies', () => {
   it('should work correctly', () => {
@@ -34,7 +35,7 @@ describe('getInstalledDependencies', () => {
     expect(getInstalledDependencies({ packageJson })).toEqual([
       'react-scripts',
       'eslint',
-      'babel-eslint',
+      DEPENDENCIES.BABEL_PARSER,
     ])
   })
 })

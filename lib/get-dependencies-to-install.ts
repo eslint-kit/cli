@@ -1,6 +1,6 @@
 import { MeaningfulDependency, Config, AliasesMeta } from './shared-types'
 import { toMap } from './util/to-map'
-import { CONFIG_PREFIX } from './constants'
+import { CONFIG_PREFIX, DEPENDENCIES } from './constants'
 
 interface GetDependenciesToInstallParams {
   configs?: Config[]
@@ -46,9 +46,9 @@ export function getDependenciesToInstall({
 
     // Parser
     if (configsMap.has('typescript')) {
-      add(['@typescript-eslint/parser'])
+      add([DEPENDENCIES.TS_PARSER])
     } else if (!useTs) {
-      add(['babel-eslint'])
+      add([DEPENDENCIES.BABEL_PARSER])
     }
   }
 

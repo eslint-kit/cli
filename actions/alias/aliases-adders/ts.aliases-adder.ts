@@ -1,10 +1,11 @@
 import merge from 'deepmerge'
+import { DEPENDENCIES } from '../../../lib/constants'
 import { PathGroup, Json, AliasesMeta } from '../../../lib/shared-types'
 import { combineMerge } from './shared'
 import { CustomMerge } from './types'
 
 const tsCustomMerge: CustomMerge = key => {
-  if (key === '@typescript-eslint/parser') {
+  if (key === DEPENDENCIES.TS_PARSER) {
     return (a: string[], b: string[]) => {
       return Array.from(new Set([...a, ...b]))
     }
@@ -43,7 +44,7 @@ export const tsAliasesAdder = (currentConfig: Json, meta: AliasesMeta): Json =>
     {
       settings: {
         'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
+          [DEPENDENCIES.TS_PARSER]: ['.ts', '.tsx'],
         },
         'import/resolver': {
           typescript: {

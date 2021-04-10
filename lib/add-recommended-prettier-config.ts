@@ -1,6 +1,6 @@
 import path from 'path'
 import { FILENAMES } from './constants'
-import { FileSystemReader } from './readers/file-system.reader'
+import { FileSystemReader } from './readers'
 
 export async function addRecommendedPrettierConfig(): Promise<void> {
   const recommendedConfig = {

@@ -3,7 +3,7 @@ import YAML from 'yamljs'
 import { Json, EslintConfigMeta, PackageJson } from './shared-types'
 import { arrayToString } from './util/array-to-string'
 import { FILENAMES } from './constants'
-import { FileSystemReader } from './readers/file-system.reader'
+import { FileSystemReader } from './readers'
 
 const unsupportedConfigFileNames = ['.eslintrc.js', '.eslintrc.cjs']
 

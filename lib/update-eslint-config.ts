@@ -2,7 +2,7 @@ import path from 'path'
 import YAML from 'yamljs'
 import { Json, EslintConfigMeta, PackageJson } from './shared-types'
 import { FILENAMES } from './constants'
-import { FileSystemReader } from './readers/file-system.reader'
+import { FileSystemReader } from './readers'
 
 interface UpdateEslintConfigParams {
   updatedConfig: Json

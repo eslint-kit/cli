@@ -1,4 +1,4 @@
-import { FileSystemReader } from './readers/file-system.reader'
+import { FileSystemReader } from './readers'
 
 export function getRootDirFileNames(): Promise<string[]> {
   return FileSystemReader.readDir(process.cwd())

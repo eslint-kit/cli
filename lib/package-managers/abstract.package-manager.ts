@@ -5,7 +5,7 @@ import { AbstractRunner } from '../runners/abstract.runner'
 import { log } from '../util/log'
 import { PackageJson } from '../shared-types'
 import { MESSAGES } from '../ui/messages'
-import { FileSystemReader } from '../readers/file-system.reader'
+import { FileSystemReader } from '../readers'
 import { PackageManagerCommands } from './types'
 
 type SaveType = 'prod' | 'dev'

@@ -1,7 +1,7 @@
 import path from 'path'
 import { FILENAMES } from './constants'
 import { PackageJson } from './shared-types'
-import { FileSystemReader } from './readers/file-system.reader'
+import { FileSystemReader } from './readers'
 
 export async function findPackageJson(): Promise<PackageJson> {
   let json: string

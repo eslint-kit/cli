@@ -9,7 +9,7 @@ function createMessage({
 }): string {
   let result =
     'ESLint Kit uses exact versions of some packages for more stability.' +
-    ' Several of your currently installed packages have unsuitable versions, which can be not supported.'
+    ' Several of your currently installed packages may be incompatible with ESLint Kit.'
 
   const { tooHigh, tooLow } = wrongDependencies
 

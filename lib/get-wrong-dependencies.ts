@@ -5,7 +5,7 @@ import {
   WrongDependencies,
 } from './shared-types'
 import { MAX_VERSIONS } from './constants'
-import { equals, greater, lower } from './dependency-version-compare'
+import { equals, mayBeGreater, lower } from './dependency-version-compare'
 import {
   isDependencyLimited,
   isDependencyMeaningful,
@@ -48,7 +48,7 @@ export function getWrongDependencies({
 
   const tooHigh = limitedDependencies.filter(dependency => {
     const version = allDependencies[dependency]
-    return greater(version, maxVersions[dependency] as string)
+    return mayBeGreater(version, maxVersions[dependency] as string)
   })
 
   return {

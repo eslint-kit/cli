@@ -1,24 +1,55 @@
-import { eq, satisfies, subset, valid, validRange } from 'semver'
+import { eq, minVersion, satisfies, subset, valid, validRange } from 'semver'
 
-function compare(version: string, target: string, sign: '<' | '>'): boolean {
-  if (valid(version)) {
-    return satisfies(version, sign + target)
+function toVersion(versionOrRange: string): string {
+  if (valid(versionOrRange)) {
+    return versionOrRange
   }
 
-  if (validRange(version)) {
-    const matches = satisfies(target, version)
-    return subset(version, sign + target) || (sign === '>' && matches)
+  if (validRange(versionOrRange)) {
+    const versionObject = minVersion(versionOrRange)
+    if (!versionObject) throw new Error('Invalid version')
+    return versionObject.version
   }
 
   throw new Error('Invalid version')
 }
 
-export function lower(version: string, target: string): boolean {
-  return compare(version, target, '<')
+function compare(
+  versionOrRange: string,
+  target: string,
+  sign: '<' | '>'
+): boolean {
+  if (valid(versionOrRange)) {
+    return satisfies(versionOrRange, sign + target)
+  }
+
+  if (validRange(versionOrRange)) {
+    const matches = satisfies(target, versionOrRange)
+    return subset(versionOrRange, sign + target) || (sign === '>' && matches)
+  }
+
+  throw new Error('Invalid version')
 }
 
-export function greater(version: string, target: string): boolean {
-  return compare(version, target, '>')
+export function lower(versionOrRange: string, target: string): boolean {
+  return compare(versionOrRange, target, '<')
+}
+
+export function mayBeGreater(versionOrRange: string, target: string): boolean {
+  return compare(versionOrRange, target, '>')
+}
+
+export function greater(versionOrRange: string, target: string): boolean {
+  const version = toVersion(versionOrRange)
+  return satisfies(version, '>' + target)
+}
+
+export function greaterOrEquals(
+  versionOrRange: string,
+  target: string
+): boolean {
+  const version = toVersion(versionOrRange)
+  return satisfies(version, '>=' + target)
 }
 
 export function equals(version: string, target: string): boolean {

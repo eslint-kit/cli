@@ -29,7 +29,7 @@ export class CheckVersionsAction {
 
     const requiredDependencies = getRequiredDependencies({
       installedDependencies,
-      configs: installedConfigs,
+      finalConfigs: installedConfigs,
       // maybe there is no aliases
       // but we need it for checking
       // we won't install alias dependencies anyway (if there aren't wrong versions)

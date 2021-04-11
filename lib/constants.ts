@@ -14,11 +14,12 @@ export enum DEPENDENCIES {
 export const CONFIG_PREFIX = '@eslint-kit/'
 
 export const CONFIG_PRIORITIES: Record<Config, number> = {
-  base: 1,
-  typescript: 2,
-  node: 3,
-  react: 4,
-  prettier: 5,
+  'base': 1,
+  'typescript': 2,
+  'node': 3,
+  'react': 4,
+  'react-17': 5,
+  'prettier': 6,
 }
 
 export const MAX_VERSIONS: MaxVersions = {

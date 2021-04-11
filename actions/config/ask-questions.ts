@@ -8,11 +8,6 @@ interface ConfigChoice extends Choice {
   value: Config
 }
 
-interface AskQuestionsParams {
-  prettierConfigMeta: PrettierConfigMeta
-  installedConfigs: Config[]
-}
-
 const DEFAULT_CONFIG_CHOICES: ConfigChoice[] = [
   { name: 'Base (required)', value: 'base', checked: true },
   { name: 'Prettier', value: 'prettier' },
@@ -22,11 +17,12 @@ const DEFAULT_CONFIG_CHOICES: ConfigChoice[] = [
 ]
 
 const configToNameMapper: Record<Config, string> = {
-  base: 'Base',
-  prettier: 'Prettier',
-  react: 'React',
-  node: 'Node',
-  typescript: 'TypeScript',
+  'base': 'Base',
+  'prettier': 'Prettier',
+  'react': 'React',
+  'react-17': 'React >=17',
+  'node': 'Node',
+  'typescript': 'TypeScript',
 }
 
 function configToName(configKey: Config): string {
@@ -82,6 +78,11 @@ function createConfirmationMessage({
   result += '\n\n'
 
   return result
+}
+
+interface AskQuestionsParams {
+  prettierConfigMeta: PrettierConfigMeta
+  installedConfigs: Config[]
 }
 
 export async function askQuestions({

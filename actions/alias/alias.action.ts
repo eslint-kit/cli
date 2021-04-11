@@ -47,7 +47,7 @@ export class AliasAction {
 
     const requiredDependencies = getRequiredDependencies({
       installedDependencies,
-      configs: installedConfigs,
+      finalConfigs: installedConfigs,
       hasAliases: true,
       useTs,
     })

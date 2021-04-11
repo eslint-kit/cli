@@ -3,35 +3,35 @@ import { toMap } from './util/to-map'
 import { DEPENDENCIES } from './constants'
 import { toConfigPackage } from './config-name-helpers'
 
-interface GetDependenciesToInstallParams {
+interface GetRequiredDependenciesParams {
   installedDependencies: string[]
-  configs?: Config[]
+  finalConfigs?: Config[]
   hasAliases?: boolean
   useTs: boolean
 }
 
 export function getRequiredDependencies({
   installedDependencies,
-  configs,
+  finalConfigs,
   hasAliases = false,
   useTs,
-}: GetDependenciesToInstallParams): MeaningfulDependency[] {
-  const dependencies: Set<MeaningfulDependency> = new Set()
+}: GetRequiredDependenciesParams): MeaningfulDependency[] {
+  const dependenciesSet: Set<MeaningfulDependency> = new Set()
 
   function add(deps: MeaningfulDependency[]): void {
     for (const dep of deps) {
-      dependencies.add(dep)
+      dependenciesSet.add(dep)
     }
   }
 
   function remove(deps: MeaningfulDependency[]): void {
     for (const dep of deps) {
-      dependencies.delete(dep)
+      dependenciesSet.delete(dep)
     }
   }
 
-  if (configs) {
-    const configsMap = toMap(configs)
+  if (finalConfigs) {
+    const configsMap = toMap(finalConfigs)
 
     add(['eslint'])
 
@@ -75,5 +75,5 @@ export function getRequiredDependencies({
     }
   }
 
-  return Array.from(dependencies)
+  return Array.from(dependenciesSet)
 }

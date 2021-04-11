@@ -10,6 +10,7 @@ import { getDependenciesToDelete } from '../../lib/get-dependencies-to-delete'
 import { getWrongDependencies } from '../../lib/get-wrong-dependencies'
 import { getRequiredDependencies } from '../../lib/get-required-dependencies'
 import { getWrongDependenciesToUpdate } from '../../lib/get-wrong-dependencies-to-update'
+import { getFinalConfigs } from '../../lib/get-final-configs'
 import { askQuestions } from './ask-questions'
 import { getUpdatedEslintConfig } from './get-updated-eslint-config'
 import { LOCAL_MESSAGES } from './ui/local-messages'
@@ -48,9 +49,14 @@ export class ConfigAction {
       { updatedConfigs }
     )
 
+    const finalConfigs = getFinalConfigs({
+      packageJson,
+      updatedConfigs,
+    })
+
     const updatedConfig = getUpdatedEslintConfig({
       eslintConfigMeta,
-      updatedConfigs,
+      finalConfigs,
       useTs,
     })
 
@@ -66,7 +72,7 @@ export class ConfigAction {
 
     const requiredDependencies = getRequiredDependencies({
       installedDependencies,
-      configs: updatedConfigs,
+      finalConfigs,
       useTs,
     })
 

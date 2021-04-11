@@ -20,7 +20,7 @@ It can:
 - Setup configs from [eslint-config-kit](https://github.com/eslint-kit/eslint-config-kit) automatically.  
   **(JSON / YAML eslint config files are supported)**
 
-- Install required dependencies.  
+- Install and manage required dependencies.  
   **(NPM / Yarn)**
 
 - Add aliases support for `eslint-plugin-import`.  
@@ -47,23 +47,36 @@ eslint-kit
 
 - [Manage configs](#manage-configs)
 - [Setup aliases](#setup-aliases)
+- [Check versions](#check-versions)
 
 ### Manage configs
 
+Select everything you want using convenient dialogs. CLI will do everything for you.
+
 ```
-$ eslint-kit
+$ npx @eslint-kit/cli
 ```
 
 or
 
 ```
-$ eslint-kit config
+$ npx @eslint-kit/cli config
 ```
 
 ### Setup aliases
 
+Just enter aliases in JSON format and CLI will take care of it.
+
 ```
-$ eslint-kit alias
+$ npx @eslint-kit/cli alias
+```
+
+### Check versions
+
+Check packages for compatibility with ESLint Kit. If some versions are not ok, CLI will offer you a way to fix it.
+
+```
+$ npx @eslint-kit/cli check-versions
 ```
 
 Learn more about `eslint-kit` [here](https://github.com/eslint-kit/eslint-config-kit).

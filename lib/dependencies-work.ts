@@ -1,38 +1,98 @@
-import { MeaningfulDependency, PackageManager } from './shared-types'
+import ora from 'ora'
+import chalk from 'chalk'
+import {
+  MaxVersions,
+  MeaningfulDependency,
+  PackageManager,
+} from './shared-types'
 import { NpmPackageManager, YarnPackageManager } from './package-managers'
+import { MAX_VERSIONS } from './constants'
+import { MESSAGES } from './ui/messages'
+import { log } from './util/log'
 
 const PACKAGE_MANAGERS = {
   npm: NpmPackageManager,
   yarn: YarnPackageManager,
 }
 
-interface InstallDependenciesParams {
+interface UpdateDependenciesParams {
   packageManager: PackageManager
-  dependencies: MeaningfulDependency[]
+  dependenciesToInstall?: MeaningfulDependency[]
+  dependenciesToDelete?: MeaningfulDependency[]
+  maxVersions?: MaxVersions
 }
 
-export async function installDependencies({
+export async function updateDependencies({
   packageManager: packageManagerName,
-  dependencies,
-}: InstallDependenciesParams): Promise<void> {
-  if (dependencies.length === 0) {
+  dependenciesToInstall = [],
+  dependenciesToDelete = [],
+  maxVersions = MAX_VERSIONS,
+}: UpdateDependenciesParams): Promise<void> {
+  if (dependenciesToInstall.length === 0 && dependenciesToDelete.length === 0) {
     return
+  }
+
+  const anyVersion: string[] = []
+  const exactVersion: string[] = []
+
+  for (const dependency of dependenciesToInstall) {
+    if (maxVersions[dependency]) {
+      exactVersion.push(`${dependency}@${maxVersions[dependency]}`)
+      continue
+    }
+
+    anyVersion.push(dependency)
   }
 
   const packageManager = new PACKAGE_MANAGERS[packageManagerName]()
 
-  await packageManager.install(dependencies, 'dev')
-}
+  const spinner = ora({
+    spinner: 'dots',
+  })
 
-export async function deleteDependencies({
-  packageManager: packageManagerName,
-  dependencies,
-}: InstallDependenciesParams): Promise<void> {
-  if (dependencies.length === 0) {
-    return
+  const spin = (text: string): void => {
+    spinner.text = text
+
+    if (!spinner.isSpinning) {
+      spinner.start()
+    }
   }
 
-  const packageManager = new PACKAGE_MANAGERS[packageManagerName]()
+  const showResult = (text: string): Promise<void> => {
+    spinner.text = text
 
-  await packageManager.uninstall(dependencies, 'dev')
+    return new Promise(resolve => {
+      setTimeout(resolve, 2000)
+    })
+  }
+
+  log(MESSAGES.PACKAGE_MANAGER.WARNING, [chalk.red, chalk.bold])
+
+  try {
+    if (dependenciesToDelete.length > 0) {
+      spin(chalk.yellow(MESSAGES.PACKAGE_MANAGER.REMOVING))
+      await packageManager.uninstall(dependenciesToDelete)
+      await showResult(chalk.green(MESSAGES.PACKAGE_MANAGER.REMOVED))
+    }
+
+    if (anyVersion.length > 0) {
+      spin(chalk.yellow(MESSAGES.PACKAGE_MANAGER.INSTALLING))
+      await packageManager.install(anyVersion, 'dev')
+      await showResult(chalk.green(MESSAGES.PACKAGE_MANAGER.INSTALLED))
+    }
+
+    if (exactVersion.length > 0) {
+      spin(chalk.yellow(MESSAGES.PACKAGE_MANAGER.INSTALLING_EXACT))
+      await packageManager.install(exactVersion, 'dev', true)
+      await showResult(chalk.green(MESSAGES.PACKAGE_MANAGER.INSTALLED))
+    }
+
+    spinner.stop()
+  } catch (error) {
+    spinner.stop()
+    log(
+      MESSAGES.PACKAGE_MANAGER.FAILED(error?.message ?? 'Unknown error'),
+      chalk.red
+    )
+  }
 }

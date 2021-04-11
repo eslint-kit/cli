@@ -1,5 +1,5 @@
 import { EslintConfigMeta, Json, Config } from '../../lib/shared-types'
-import { isFromConfigKit, cropConfigName } from '../../lib/config-name-helpers'
+import { isFromConfigKit, toConfigName } from '../../lib/config-name-helpers'
 import {
   CONFIG_PRIORITIES,
   CONFIG_PREFIX,
@@ -11,8 +11,8 @@ function byPriority(a: string, b: string): number {
     return 0
   }
 
-  const priorityA = CONFIG_PRIORITIES[cropConfigName(a)]
-  const priorityB = CONFIG_PRIORITIES[cropConfigName(b)]
+  const priorityA = CONFIG_PRIORITIES[toConfigName(a)]
+  const priorityB = CONFIG_PRIORITIES[toConfigName(b)]
 
   return priorityA - priorityB
 }

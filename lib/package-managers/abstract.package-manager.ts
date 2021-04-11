@@ -1,10 +1,6 @@
 import path from 'path'
-import ora from 'ora'
-import chalk from 'chalk'
 import { AbstractRunner } from '../runners/abstract.runner'
-import { log } from '../util/log'
 import { PackageJson } from '../shared-types'
-import { MESSAGES } from '../ui/messages'
 import { FileSystemReader } from '../readers'
 import { PackageManagerCommands } from './types'
 
@@ -37,73 +33,48 @@ export abstract class AbstractPackageManager {
 
   private async manageDependencies(
     command: string,
-    messages: {
-      warning: string
-      progress: string
-      succeed: string
-      failed: string
-    },
     dependencies: string[],
-    saveType?: SaveType
+    saveType?: SaveType,
+    exact = false
   ): Promise<void> {
-    log(messages.warning, [chalk.red, chalk.bold])
+    const dependenciesString: string = dependencies.join(' ')
 
-    const spinner = ora({
-      spinner: 'dots',
-      prefixText: '\n',
-      text: chalk.yellow(messages.progress),
-    })
+    const args: string[] = []
 
-    spinner.start()
+    args.push(command)
 
-    try {
-      const dependenciesString: string = dependencies.join(' ')
-
-      const args: string[] = []
-
-      args.push(command)
-
-      if (saveType === 'prod') {
-        args.push(this.cli.saveFlag)
-      }
-
-      if (saveType === 'dev') {
-        args.push(this.cli.saveDevFlag)
-      }
-
-      args.push(dependenciesString)
-
-      args.push('--silent')
-
-      const argsString = args.filter(Boolean).join(' ')
-      const collect = true
-
-      await this.runner.run(argsString, collect)
-
-      spinner.succeed()
-
-      log(messages.succeed, chalk.green)
-    } catch (err) {
-      spinner.fail()
-
-      throw new Error(messages.failed + '\n  ' + err.message)
+    if (saveType === 'prod') {
+      args.push(this.cli.saveFlag)
     }
+
+    if (saveType === 'dev') {
+      args.push(this.cli.saveDevFlag)
+    }
+
+    if (exact) {
+      args.push(this.cli.exactFlag)
+    }
+
+    args.push(dependenciesString)
+
+    args.push('--silent')
+
+    const argsString = args.filter(Boolean).join(' ')
+    const collect = true
+
+    await this.runner.run(argsString, collect)
   }
 
   public async install(
     dependencies: string[],
-    saveType?: SaveType
+    saveType?: SaveType,
+    exact = false
   ): Promise<void> {
     return this.manageDependencies(
       this.cli.install,
-      {
-        warning: MESSAGES.PACKAGE_MANAGER_INSTALLATION_WARNING,
-        progress: MESSAGES.PACKAGE_MANAGER_INSTALLATION_IN_PROGRESS,
-        succeed: MESSAGES.PACKAGE_MANAGER_INSTALLATION_SUCCEED,
-        failed: MESSAGES.PACKAGE_MANAGER_INSTALLATION_FAILED,
-      },
       dependencies,
-      this.options.useFlagForInstall ? saveType : undefined
+      this.options.useFlagForInstall ? saveType : undefined,
+      exact
     )
   }
 
@@ -113,12 +84,6 @@ export abstract class AbstractPackageManager {
   ): Promise<void> {
     return this.manageDependencies(
       this.cli.uninstall,
-      {
-        warning: MESSAGES.PACKAGE_MANAGER_UNINSTALLATION_WARNING,
-        progress: MESSAGES.PACKAGE_MANAGER_UNINSTALLATION_IN_PROGRESS,
-        succeed: MESSAGES.PACKAGE_MANAGER_UNINSTALLATION_SUCCEED,
-        failed: MESSAGES.PACKAGE_MANAGER_UNINSTALLATION_FAILED,
-      },
       dependencies,
       this.options.useFlagForUninstall ? saveType : undefined
     )

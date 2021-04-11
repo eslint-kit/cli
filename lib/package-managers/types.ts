@@ -3,4 +3,5 @@ export interface PackageManagerCommands {
   uninstall: string
   saveFlag: string
   saveDevFlag: string
+  exactFlag: string
 }

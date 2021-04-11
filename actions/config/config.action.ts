@@ -4,12 +4,12 @@ import { log } from '../../lib/util/log'
 import { MESSAGES } from '../../lib/ui/messages'
 import { addRecommendedPrettierConfig } from '../../lib/add-recommended-prettier-config'
 import { getDependenciesToInstall } from '../../lib/get-dependencies-to-install'
-import {
-  installDependencies,
-  deleteDependencies,
-} from '../../lib/dependencies-work'
+import { updateDependencies } from '../../lib/dependencies-work'
 import { getDataBySchema } from '../../lib/get-data-by-schema'
 import { getDependenciesToDelete } from '../../lib/get-dependencies-to-delete'
+import { getWrongDependencies } from '../../lib/get-wrong-dependencies'
+import { getRequiredDependencies } from '../../lib/get-required-dependencies'
+import { getWrongDependenciesToUpdate } from '../../lib/get-wrong-dependencies-to-update'
 import { askQuestions } from './ask-questions'
 import { getUpdatedEslintConfig } from './get-updated-eslint-config'
 import { LOCAL_MESSAGES } from './ui/local-messages'
@@ -34,8 +34,6 @@ export class ConfigAction {
 
     const {
       updatedConfigs,
-      addedConfigs,
-      deletedConfigs,
       shouldAddRecommendedPrettierConfig,
     } = await askQuestions({
       prettierConfigMeta,
@@ -47,7 +45,7 @@ export class ConfigAction {
         useTs: true,
       },
       { installedDependencies, installedConfigs },
-      { addedConfigs }
+      { updatedConfigs }
     )
 
     const updatedConfig = getUpdatedEslintConfig({
@@ -66,29 +64,41 @@ export class ConfigAction {
       addRecommendedPrettierConfig()
     }
 
-    const dependenciesToInstall = getDependenciesToInstall({
-      configs: addedConfigs,
+    const requiredDependencies = getRequiredDependencies({
       installedDependencies,
+      configs: updatedConfigs,
       useTs,
     })
 
-    const dependenciesToDelete = getDependenciesToDelete({
-      configs: deletedConfigs,
+    const wrongDependencies = getWrongDependencies({
+      packageJson,
+      requiredDependencies,
+    })
+
+    const wrongDependenciesToUpdate = await getWrongDependenciesToUpdate({
+      wrongDependencies,
+    })
+
+    const dependenciesToInstall = getDependenciesToInstall({
+      requiredDependencies,
       installedDependencies,
+      wrongDependenciesToUpdate,
     })
 
-    await installDependencies({
+    const dependenciesToDelete = getDependenciesToDelete({
+      requiredDependencies,
+      installedDependencies,
+      wrongDependenciesToUpdate,
+    })
+
+    await updateDependencies({
       packageManager,
-      dependencies: dependenciesToInstall,
+      dependenciesToInstall,
+      dependenciesToDelete,
     })
 
-    await deleteDependencies({
-      packageManager,
-      dependencies: dependenciesToDelete,
-    })
-
-    log(LOCAL_MESSAGES.FINISHED, chalk.green)
-    log(MESSAGES.PLEASE_RESTART, [chalk.magenta, chalk.bold])
+    log(LOCAL_MESSAGES.FINISHED, chalk.green, [false, true])
+    log(MESSAGES.PLEASE_RESTART, [chalk.magenta, chalk.bold], [false, true])
   }
 
   public static async handle(): Promise<void> {

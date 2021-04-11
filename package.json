@@ -42,6 +42,7 @@
     "mem": "^6.0.1",
     "nanoid": "^2.1.11",
     "ora": "^4.0.3",
+    "semver": "^7.3.5",
     "yamljs": "0.3.0"
   },
   "devDependencies": {
@@ -52,6 +53,7 @@
     "@types/node": "12.12.21",
     "@types/ora": "^3.2.0",
     "@types/rimraf": "2.0.3",
+    "@types/semver": "^7.3.4",
     "@types/webpack-node-externals": "1.7.1",
     "@types/yamljs": "0.2.30",
     "@typescript-eslint/eslint-plugin": "^2.19.0",

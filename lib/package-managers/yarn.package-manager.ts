@@ -15,6 +15,7 @@ export class YarnPackageManager extends AbstractPackageManager {
       uninstall: 'remove',
       saveFlag: '',
       saveDevFlag: '-D',
+      exactFlag: '-E',
     }
   }
 }

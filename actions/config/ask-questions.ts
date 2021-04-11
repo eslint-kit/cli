@@ -45,7 +45,7 @@ function createConfigsMessage({
     result += '(uncheck installed configs to remove them)'
   }
 
-  result += '\n\n'
+  result += ':\n'
 
   return result
 }

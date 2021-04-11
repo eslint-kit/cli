@@ -13,6 +13,7 @@ export class NpmPackageManager extends AbstractPackageManager {
       uninstall: 'uninstall',
       saveFlag: '--save',
       saveDevFlag: '--save-dev',
+      exactFlag: '-E',
     }
   }
 }

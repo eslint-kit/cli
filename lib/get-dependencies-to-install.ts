@@ -1,64 +1,25 @@
-import { MeaningfulDependency, Config, AliasesMeta } from './shared-types'
-import { toMap } from './util/to-map'
-import { CONFIG_PREFIX, DEPENDENCIES } from './constants'
+import { MeaningfulDependency } from './shared-types'
 
 interface GetDependenciesToInstallParams {
-  configs?: Config[]
-  aliases?: AliasesMeta
-  installedDependencies: string[]
-  useTs: boolean
+  requiredDependencies?: MeaningfulDependency[]
+  installedDependencies?: string[]
+  wrongDependenciesToUpdate: MeaningfulDependency[]
 }
 
 export function getDependenciesToInstall({
-  configs,
-  aliases,
+  requiredDependencies,
   installedDependencies,
-  useTs,
+  wrongDependenciesToUpdate,
 }: GetDependenciesToInstallParams): MeaningfulDependency[] {
-  const installedDependenciesMap = toMap(installedDependencies)
-
-  const dependencies: MeaningfulDependency[] = []
-
-  function add(deps: MeaningfulDependency[]): void {
-    for (const dep of deps) {
-      if (installedDependenciesMap.has(dep)) continue
-      if (dependencies.includes(dep)) continue
-      dependencies.push(dep)
-    }
+  if (!requiredDependencies || !installedDependencies) {
+    return wrongDependenciesToUpdate
   }
 
-  if (configs) {
-    const configsMap = toMap(configs)
+  const installedDependenciesSet = new Set(installedDependencies)
 
-    add(['eslint'])
-
-    const configDependencies = Array.from(
-      configsMap.keys(),
-      configName =>
-        (CONFIG_PREFIX + 'eslint-config-' + configName) as MeaningfulDependency
-    )
-
-    add(configDependencies)
-
-    if (configsMap.has('prettier')) {
-      add(['prettier'])
-    }
-
-    // Parser
-    if (configsMap.has('typescript')) {
-      add([DEPENDENCIES.TS_PARSER])
-    } else if (!useTs) {
-      add([DEPENDENCIES.BABEL_PARSER])
-    }
-  }
-
-  if (aliases) {
-    if (useTs) {
-      add(['eslint-import-resolver-typescript'])
-    } else {
-      add(['eslint-import-resolver-alias'])
-    }
-  }
-
-  return dependencies
+  return requiredDependencies
+    .filter(dependency => {
+      return !installedDependenciesSet.has(dependency)
+    })
+    .concat(wrongDependenciesToUpdate)
 }

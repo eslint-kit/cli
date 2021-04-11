@@ -4,13 +4,13 @@ import { DEPENDENCIES } from './constants'
 interface CheckIfTsShouldBeUsedParams {
   installedDependencies: string[]
   installedConfigs: Config[]
-  addedConfigs?: Config[]
+  updatedConfigs?: Config[]
 }
 
 export function checkIfTsShouldBeUsed({
   installedDependencies,
   installedConfigs,
-  addedConfigs,
+  updatedConfigs,
 }: CheckIfTsShouldBeUsedParams): boolean {
   const hasTsParser = installedDependencies.includes(DEPENDENCIES.TS_PARSER)
 
@@ -20,8 +20,8 @@ export function checkIfTsShouldBeUsed({
 
   if (hasTsConfig) return true
 
-  if (addedConfigs) {
-    const willInstallTsConfig = addedConfigs.includes('typescript')
+  if (updatedConfigs) {
+    const willInstallTsConfig = updatedConfigs.includes('typescript')
 
     if (willInstallTsConfig) return true
   }

@@ -44,7 +44,7 @@ interface Data {
 }
 
 interface ProvidedDependencies {
-  addedConfigs: Config[]
+  updatedConfigs: Config[]
 }
 
 type ResolutionConfig = {
@@ -86,7 +86,7 @@ const resolutionConfig: ResolutionConfig = {
   useTs: {
     resolver: checkIfTsShouldBeUsed,
     dependencies: ['installedDependencies', 'installedConfigs'],
-    fromProvidedDependencies: ['addedConfigs'],
+    fromProvidedDependencies: ['updatedConfigs'],
   },
 }
 

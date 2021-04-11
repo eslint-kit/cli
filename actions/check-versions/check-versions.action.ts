@@ -1,6 +1,5 @@
 import chalk from 'chalk'
 import { getDataBySchema } from '../../lib/get-data-by-schema'
-import { updateEslintConfig } from '../../lib/update-eslint-config'
 import { log } from '../../lib/util/log'
 import { MESSAGES } from '../../lib/ui/messages'
 import { getDependenciesToInstall } from '../../lib/get-dependencies-to-install'
@@ -9,21 +8,16 @@ import { getRequiredDependencies } from '../../lib/get-required-dependencies'
 import { getWrongDependencies } from '../../lib/get-wrong-dependencies'
 import { getWrongDependenciesToUpdate } from '../../lib/get-wrong-dependencies-to-update'
 import { getDependenciesToDelete } from '../../lib/get-dependencies-to-delete'
-import { askQuestions } from './ask-questions'
-import { getUpdatedEslintConfig } from './get-updated-eslint-config'
 import { LOCAL_MESSAGES } from './ui/local-messages'
 
-export class AliasAction {
+export class CheckVersionsAction {
   static async process(): Promise<void> {
-    const { aliasesMeta } = await askQuestions()
-
     const {
       packageJson,
-      eslintConfigMeta,
+      installedConfigs,
       installedDependencies,
       useTs,
       packageManager,
-      installedConfigs,
     } = await getDataBySchema({
       packageJson: true,
       eslintConfigMeta: true,
@@ -33,21 +27,12 @@ export class AliasAction {
       installedConfigs: true,
     })
 
-    const updatedConfig = getUpdatedEslintConfig({
-      eslintConfigMeta,
-      aliasesMeta,
-      useTs,
-    })
-
-    await updateEslintConfig({
-      updatedConfig,
-      packageJson,
-      eslintConfigMeta,
-    })
-
     const requiredDependencies = getRequiredDependencies({
       installedDependencies,
       configs: installedConfigs,
+      // maybe there is no aliases
+      // but we need it for checking
+      // we won't install alias dependencies anyway (if there aren't wrong versions)
       hasAliases: true,
       useTs,
     })
@@ -57,19 +42,30 @@ export class AliasAction {
       requiredDependencies,
     })
 
+    if (wrongDependencies.total === 0) {
+      log(LOCAL_MESSAGES.VERSIONS_ARE_FINE, chalk.green)
+      return
+    }
+
     const wrongDependenciesToUpdate = await getWrongDependenciesToUpdate({
       wrongDependencies,
     })
 
+    if (wrongDependenciesToUpdate.length === 0) {
+      log(LOCAL_MESSAGES.UPDATE_WAS_SKIPPED, chalk.yellow)
+      return
+    }
+
+    /*
+     * We don't use requiredDependencies further
+     * Since it can contain dependencies we don't need
+     */
+
     const dependenciesToInstall = getDependenciesToInstall({
-      requiredDependencies,
-      installedDependencies,
       wrongDependenciesToUpdate,
     })
 
     const dependenciesToDelete = getDependenciesToDelete({
-      requiredDependencies,
-      installedDependencies,
       wrongDependenciesToUpdate,
     })
 
@@ -79,13 +75,13 @@ export class AliasAction {
       dependenciesToDelete,
     })
 
-    log(LOCAL_MESSAGES.ADDED_ALIASES, chalk.green)
-    log(MESSAGES.PLEASE_RESTART, [chalk.magenta, chalk.bold], [false, true])
+    log(LOCAL_MESSAGES.VERSIONS_UPDATED, chalk.green, [true, false])
+    log(MESSAGES.PLEASE_RESTART, [chalk.magenta, chalk.bold])
   }
 
   public static async handle(): Promise<void> {
     try {
-      await AliasAction.process()
+      await CheckVersionsAction.process()
     } catch (err) {
       log(err.message, chalk.red)
     }

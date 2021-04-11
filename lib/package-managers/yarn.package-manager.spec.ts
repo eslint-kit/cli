@@ -39,6 +39,7 @@ describe('YarnPackageManager', () => {
       uninstall: 'remove',
       saveFlag: '',
       saveDevFlag: '-D',
+      exactFlag: '-E',
     }
 
     expect(packageManager.cli).toMatchObject(expectedValues)

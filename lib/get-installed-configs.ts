@@ -1,5 +1,5 @@
 import { EslintConfigMeta, Config } from './shared-types'
-import { isFromConfigKit, cropConfigName } from './config-name-helpers'
+import { isFromConfigKit, toConfigName } from './config-name-helpers'
 
 interface GetInstalledConfigsParams {
   eslintConfigMeta: EslintConfigMeta
@@ -19,7 +19,7 @@ export function getInstalledConfings({
       return []
     }
 
-    return [cropConfigName(content.extends)]
+    return [toConfigName(content.extends)]
   }
 
   if (!Array.isArray(content.extends)) {
@@ -29,5 +29,5 @@ export function getInstalledConfings({
   return content.extends
     .map(String)
     .filter(isFromConfigKit)
-    .map(cropConfigName)
+    .map(toConfigName)
 }

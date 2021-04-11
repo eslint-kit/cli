@@ -1,18 +1,22 @@
-import { isFromConfigKit, cropConfigName } from './config-name-helpers'
+import {
+  isFromConfigKit,
+  toConfigName,
+  toConfigPackage,
+} from './config-name-helpers'
 import { CONFIG_PREFIX } from './constants'
 
 describe('config name helpers', () => {
-  describe('isFromConfigKit', () => {
-    it('should work correctly', () => {
-      expect(isFromConfigKit(CONFIG_PREFIX + 'base')).toBe(true)
-      expect(isFromConfigKit('gidubgdifygb')).toBe(false)
-    })
+  test('isFromConfigKit', () => {
+    expect(isFromConfigKit(CONFIG_PREFIX + 'base')).toBe(true)
+    expect(isFromConfigKit('gidubgdifygb')).toBe(false)
   })
 
-  describe('cropConfigName', () => {
-    it('should work correctly', () => {
-      expect(cropConfigName(CONFIG_PREFIX + 'base')).toBe('base')
-      expect(cropConfigName(CONFIG_PREFIX + 'react')).toBe('react')
-    })
+  test('toConfigName', () => {
+    expect(toConfigName(CONFIG_PREFIX + 'base')).toBe('base')
+    expect(toConfigName(CONFIG_PREFIX + 'react')).toBe('react')
+  })
+
+  test('toConfigPackage', () => {
+    expect(toConfigPackage('base')).toBe('@eslint-kit/eslint-config-base')
   })
 })

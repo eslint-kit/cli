@@ -1,4 +1,4 @@
-import { Config } from './shared-types'
+import { Config, MaxVersions, MeaningfulDependency } from './shared-types'
 
 export const FILENAMES = {
   ESLINT: '.eslintrc',
@@ -20,3 +20,21 @@ export const CONFIG_PRIORITIES: Record<Config, number> = {
   react: 4,
   prettier: 5,
 }
+
+export const MAX_VERSIONS: MaxVersions = {
+  'eslint': '7.10.0',
+  'babel-eslint': '10.1.0',
+  '@typescript-eslint/parser': '4.15.0',
+  'eslint-import-resolver-alias': '1.1.2',
+  'eslint-import-resolver-typescript': '2.3.0',
+  'prettier': '2.2.1',
+  '@eslint-kit/eslint-config-base': null,
+  '@eslint-kit/eslint-config-node': null,
+  '@eslint-kit/eslint-config-prettier': null,
+  '@eslint-kit/eslint-config-react': null,
+  '@eslint-kit/eslint-config-typescript': null,
+}
+
+export const MEANINGFUL_DEPENDENCIES = Object.keys(
+  MAX_VERSIONS
+) as MeaningfulDependency[]

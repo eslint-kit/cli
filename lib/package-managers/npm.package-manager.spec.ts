@@ -39,6 +39,7 @@ describe('NpmPackageManager', () => {
       uninstall: 'uninstall',
       saveFlag: '--save',
       saveDevFlag: '--save-dev',
+      exactFlag: '-E',
     }
 
     expect(packageManager.cli).toMatchObject(expectedValues)

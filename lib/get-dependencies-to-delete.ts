@@ -1,37 +1,35 @@
-import { MeaningfulDependency, Config } from './shared-types'
-import { toMap } from './util/to-map'
-import { CONFIG_PREFIX } from './constants'
+// import chalk from 'chalk'
+// import inquirer from 'inquirer'
+import { isFromConfigKit } from './config-name-helpers'
+import { isDependencyMeaningful } from './dependency-guards'
+import { MeaningfulDependency } from './shared-types'
 
-interface GetDependenciesToInstallParams {
-  configs?: Config[]
-  installedDependencies: string[]
+interface GetDependenciesToDeleteParams {
+  requiredDependencies?: MeaningfulDependency[]
+  installedDependencies?: string[]
+  wrongDependenciesToUpdate: MeaningfulDependency[]
 }
 
 export function getDependenciesToDelete({
-  configs,
+  requiredDependencies,
   installedDependencies,
-}: GetDependenciesToInstallParams): MeaningfulDependency[] {
-  const installedDependenciesMap = toMap(installedDependencies)
-
-  const dependencies: MeaningfulDependency[] = []
-
-  function add(deps: MeaningfulDependency[]): void {
-    for (const dep of deps) {
-      if (!installedDependenciesMap.has(dep)) continue
-      if (dependencies.includes(dep)) continue
-      dependencies.push(dep)
-    }
+  wrongDependenciesToUpdate,
+}: GetDependenciesToDeleteParams): MeaningfulDependency[] {
+  if (!requiredDependencies || !installedDependencies) {
+    return wrongDependenciesToUpdate
   }
 
-  if (configs) {
-    const configDependencies = Array.from(
-      configs,
-      configName =>
-        (CONFIG_PREFIX + 'eslint-config-' + configName) as MeaningfulDependency
-    )
+  const requiredDependenciesSet = new Set(requiredDependencies)
 
-    add(configDependencies)
-  }
-
-  return dependencies
+  return (
+    installedDependencies
+      .filter(isDependencyMeaningful)
+      .filter(dependency => {
+        return !requiredDependenciesSet.has(dependency)
+      })
+      // we can delete configs without any questions
+      .filter(isFromConfigKit)
+      // and wrong dependencies too
+      .concat(wrongDependenciesToUpdate)
+  )
 }

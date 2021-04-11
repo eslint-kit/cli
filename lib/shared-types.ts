@@ -12,6 +12,15 @@ export type MeaningfulDependency =
   | 'eslint-import-resolver-typescript'
   | 'eslint-import-resolver-alias'
 
+export type MaxVersions = Record<MeaningfulDependency, string | null>
+
+export interface WrongDependencies {
+  notEqual: MeaningfulDependency[]
+  tooLow: MeaningfulDependency[]
+  tooHigh: MeaningfulDependency[]
+  total: number
+}
+
 export type JsonValue =
   | undefined
   | boolean

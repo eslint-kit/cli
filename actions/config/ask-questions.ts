@@ -20,7 +20,7 @@ const configToNameMapper: Record<Config, string> = {
   'base': 'Base',
   'prettier': 'Prettier',
   'react': 'React',
-  'react-17': 'React >=17',
+  'react-new-jsx-transform': 'React With New JSX Transform Support',
   'node': 'Node',
   'typescript': 'TypeScript',
 }

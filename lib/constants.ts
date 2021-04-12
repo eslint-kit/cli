@@ -18,7 +18,7 @@ export const CONFIG_PRIORITIES: Record<Config, number> = {
   'typescript': 2,
   'node': 3,
   'react': 4,
-  'react-17': 5,
+  'react-new-jsx-transform': 5,
   'prettier': 6,
 }
 

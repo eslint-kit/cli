@@ -82,7 +82,7 @@ export type Config =
   | 'base'
   | 'prettier'
   | 'react'
-  | 'react-17'
+  | 'react-new-jsx-transform'
   | 'node'
   | 'typescript'
 

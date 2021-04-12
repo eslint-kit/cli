@@ -1,4 +1,12 @@
-import { eq, minVersion, satisfies, subset, valid, validRange } from 'semver'
+import {
+  eq,
+  minVersion,
+  satisfies,
+  subset,
+  valid,
+  validRange,
+  major,
+} from 'semver'
 
 function toVersion(versionOrRange: string): string {
   if (valid(versionOrRange)) {
@@ -29,6 +37,11 @@ function compare(
   }
 
   throw new Error('Invalid version')
+}
+
+export function getMajor(versionOrRange: string): number {
+  const version = toVersion(versionOrRange)
+  return major(version)
 }
 
 export function lower(versionOrRange: string, target: string): boolean {

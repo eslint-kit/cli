@@ -4,9 +4,16 @@ import {
   greater,
   greaterOrEquals,
   lower,
+  getMajor,
 } from './dependency-version-compare'
 
 describe('dependency version compare', () => {
+  test('getMajor', () => {
+    expect(getMajor('17.0.3')).toBe(17)
+    expect(getMajor('^16.0.3')).toBe(16)
+    expect(getMajor('0.2.3')).toBe(0)
+  })
+
   test('lower', () => {
     expect(lower('1.1.1', '2.2.2')).toBeTruthy()
     expect(lower('2.1.1', '2.2.2')).toBeTruthy()

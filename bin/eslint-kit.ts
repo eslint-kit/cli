@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import commander from 'commander'
-import { ConfigCommand, AliasCommand, CheckVersionsCommand } from '../commands'
+import { ConfigCommand, AliasCommand, CheckCommand } from '../commands'
 
 function bootstrap(): void {
   const program = commander
@@ -17,7 +17,7 @@ function bootstrap(): void {
 
   ConfigCommand.load(program)
   AliasCommand.load(program)
-  CheckVersionsCommand.load(program)
+  CheckCommand.load(program)
 
   program.parse(process.argv)
 }

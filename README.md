@@ -47,7 +47,7 @@ eslint-kit
 
 - [Manage configs](#manage-configs)
 - [Setup aliases](#setup-aliases)
-- [Check versions](#check-versions)
+- [Check](#check)
 
 ### Manage configs
 
@@ -71,9 +71,15 @@ Just enter aliases in JSON format and CLI will take care of it.
 $ npx @eslint-kit/cli alias
 ```
 
-### Check versions
+### Check
 
 Check packages for compatibility with ESLint Kit. If some versions are not ok, CLI will offer you a way to fix it.
+
+```
+$ npx @eslint-kit/cli check
+```
+
+or
 
 ```
 $ npx @eslint-kit/cli check-versions

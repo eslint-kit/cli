@@ -38,6 +38,7 @@ export interface PackageJson extends Json {
   prettier?: Json
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
+  workspaces?: string[]
 }
 
 export interface EslintConfig extends Json {
@@ -45,6 +46,7 @@ export interface EslintConfig extends Json {
   parser?: Parser
   settings?: Json
   rules?: Record<string, number | string | Json>
+  root?: boolean
 }
 
 export type EslintConfigMeta =

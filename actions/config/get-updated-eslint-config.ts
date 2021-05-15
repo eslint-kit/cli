@@ -5,6 +5,7 @@ import {
   CONFIG_PREFIX,
   DEPENDENCIES,
 } from '../../lib/constants'
+import { program } from 'commander'
 
 function byPriority(a: string, b: string): number {
   if (!isFromConfigKit(a) || !isFromConfigKit(b)) {
@@ -52,6 +53,12 @@ export function getUpdatedEslintConfig({
   updatedConfig.parser = useTs
     ? DEPENDENCIES.TS_PARSER
     : DEPENDENCIES.BABEL_PARSER
+
+  const { workspace } = program.opts()
+
+  if (workspace) {
+    updatedConfig.root = true
+  }
 
   return updatedConfig
 }

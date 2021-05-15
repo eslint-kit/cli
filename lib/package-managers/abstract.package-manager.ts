@@ -31,12 +31,19 @@ export abstract class AbstractPackageManager {
 
   public abstract get cli(): PackageManagerCommands
 
-  private async manageDependencies(
-    command: string,
-    dependencies: string[],
-    saveType?: SaveType,
-    exact = false
-  ): Promise<void> {
+  private async manageDependencies({
+    command,
+    dependencies,
+    saveType,
+    exact = false,
+    usingWorkspace = false,
+  }: {
+    command: string
+    dependencies: string[]
+    saveType?: SaveType
+    exact?: boolean
+    usingWorkspace?: boolean
+  }): Promise<void> {
     const dependenciesString: string = dependencies.join(' ')
 
     const args: string[] = []
@@ -55,6 +62,10 @@ export abstract class AbstractPackageManager {
       args.push(this.cli.exactFlag)
     }
 
+    if (!usingWorkspace) {
+      args.push(this.cli.rootFlag)
+    }
+
     args.push(dependenciesString)
 
     args.push('--silent')
@@ -65,51 +76,75 @@ export abstract class AbstractPackageManager {
     await this.runner.run(argsString, collect)
   }
 
-  public async install(
-    dependencies: string[],
-    saveType?: SaveType,
-    exact = false
-  ): Promise<void> {
-    return this.manageDependencies(
-      this.cli.install,
+  public async install({
+    dependencies,
+    saveType,
+    workspace,
+    exact = false,
+  }: {
+    dependencies: string[]
+    saveType?: SaveType
+    workspace?: string
+    exact?: boolean
+  }): Promise<void> {
+    const additionalOptions: Partial<{ saveType: SaveType }> = {}
+
+    if (this.options.useFlagForInstall) {
+      additionalOptions.saveType = saveType
+    }
+
+    if (workspace) {
+      return this.manageDependencies({
+        ...additionalOptions,
+        command: this.cli.installWorkspace(workspace),
+        dependencies,
+        exact,
+        usingWorkspace: true,
+      })
+    }
+
+    return this.manageDependencies({
+      ...additionalOptions,
+      command: this.cli.install,
       dependencies,
-      this.options.useFlagForInstall ? saveType : undefined,
-      exact
-    )
+      exact,
+    })
   }
 
-  public async uninstall(
-    dependencies: string[],
+  public async uninstall({
+    dependencies,
+    saveType,
+    workspace,
+  }: {
+    dependencies: string[]
     saveType?: SaveType
-  ): Promise<void> {
-    return this.manageDependencies(
-      this.cli.uninstall,
+    workspace?: string
+  }): Promise<void> {
+    const additionalOptions: Partial<{ saveType: SaveType }> = {}
+
+    if (this.options.useFlagForUninstall) {
+      additionalOptions.saveType = saveType
+    }
+
+    if (workspace) {
+      return this.manageDependencies({
+        ...additionalOptions,
+        command: this.cli.uninstallWorkspace(workspace),
+        dependencies,
+        usingWorkspace: true,
+      })
+    }
+
+    return this.manageDependencies({
+      ...additionalOptions,
+      command: this.cli.uninstall,
       dependencies,
-      this.options.useFlagForUninstall ? saveType : undefined
-    )
+    })
   }
 
   public async version(): Promise<string> {
     const commandArguments = '--version'
     const collect = true
     return this.runner.run(commandArguments, collect) as Promise<string>
-  }
-
-  public async getInstalledDependencies(): Promise<string[]> {
-    const packageJson = await this.readPackageJson()
-    const { dependencies = {}, devDependencies = {} } = packageJson
-
-    const dependenciesNames = Object.keys(dependencies)
-    const devDependenciesNames = Object.keys(devDependencies)
-
-    return [...dependenciesNames, ...devDependenciesNames]
-  }
-
-  private async readPackageJson(): Promise<PackageJson> {
-    const buffer = await FileSystemReader.readFile(
-      path.join(process.cwd(), 'package.json')
-    )
-
-    return JSON.parse(buffer.toString())
   }
 }

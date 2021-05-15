@@ -1,18 +1,17 @@
 import inquirer from 'inquirer'
+import program from 'commander'
 import { PackageManager, Choice } from './shared-types'
+import { MESSAGES } from './ui/messages'
+import { FileSystemReader } from './readers'
 
 interface PackageManagerChoice extends Choice {
   value: PackageManager
 }
 
-interface GetPackageManagerParams {
-  rootDirFileNames: string[]
-}
+export async function getPackageManager(): Promise<PackageManager> {
+  const cwdDirFileNames = await FileSystemReader.readDir(process.cwd())
 
-export async function getPackageManager({
-  rootDirFileNames,
-}: GetPackageManagerParams): Promise<PackageManager> {
-  for (const fileName of rootDirFileNames) {
+  for (const fileName of cwdDirFileNames) {
     if (fileName === 'package-lock.json') return 'npm'
     if (fileName === 'yarn.lock') return 'yarn'
   }
@@ -22,7 +21,7 @@ export async function getPackageManager({
     { name: 'Yarn', value: 'yarn' },
   ]
 
-  return inquirer
+  const packageManager = await inquirer
     .prompt<{ packageManager: PackageManager }>([
       {
         type: 'list',
@@ -32,4 +31,10 @@ export async function getPackageManager({
       },
     ])
     .then(({ packageManager }) => packageManager)
+
+  if (program.opts().workspace && packageManager !== 'yarn') {
+    throw new Error(MESSAGES.ONLY_YARN('workspaces'))
+  }
+
+  return packageManager
 }

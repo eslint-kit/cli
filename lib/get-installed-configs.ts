@@ -1,13 +1,11 @@
 import { EslintConfigMeta, Config } from './shared-types'
 import { isFromConfigKit, toConfigName } from './config-name-helpers'
 
-interface GetInstalledConfigsParams {
+interface Params {
   eslintConfigMeta: EslintConfigMeta
 }
 
-export function getInstalledConfings({
-  eslintConfigMeta,
-}: GetInstalledConfigsParams): Config[] {
+export function getInstalledConfings({ eslintConfigMeta }: Params): Config[] {
   const { content } = eslintConfigMeta
 
   if (!content.extends) {

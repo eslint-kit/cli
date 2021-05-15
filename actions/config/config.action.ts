@@ -18,19 +18,21 @@ import { LOCAL_MESSAGES } from './ui/local-messages'
 export class ConfigAction {
   static async process(): Promise<void> {
     const {
+      rootDir,
+      packageManager,
       packageJson,
       eslintConfigMeta,
       prettierConfigMeta,
       installedConfigs,
       installedDependencies,
-      packageManager,
     } = await getDataBySchema({
+      rootDir: true,
+      packageManager: true,
       packageJson: true,
       eslintConfigMeta: true,
       prettierConfigMeta: true,
       installedConfigs: true,
       installedDependencies: true,
-      packageManager: true,
     })
 
     const {
@@ -61,13 +63,14 @@ export class ConfigAction {
     })
 
     await updateEslintConfig({
+      rootDir,
       updatedConfig,
       packageJson,
       eslintConfigMeta,
     })
 
     if (shouldAddRecommendedPrettierConfig) {
-      addRecommendedPrettierConfig()
+      addRecommendedPrettierConfig({ rootDir })
     }
 
     const requiredDependencies = getRequiredDependencies({

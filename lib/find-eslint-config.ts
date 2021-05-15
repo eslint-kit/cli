@@ -17,11 +17,13 @@ const configFileNames = [
 ]
 
 interface FindEslintConfigParams {
+  rootDir: string
   rootDirFileNames: string[]
   packageJson: PackageJson
 }
 
 export async function findEslintConfig({
+  rootDir,
   rootDirFileNames,
   packageJson,
 }: FindEslintConfigParams): Promise<EslintConfigMeta> {
@@ -72,7 +74,7 @@ export async function findEslintConfig({
     )
   }
 
-  const configPath = path.resolve(process.cwd(), configFileName)
+  const configPath = path.resolve(rootDir, configFileName)
 
   /*
    * The config is supported

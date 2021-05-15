@@ -1,7 +1,7 @@
 import { Config } from './shared-types'
 import { DEPENDENCIES } from './constants'
 
-interface CheckIfTsShouldBeUsedParams {
+interface Params {
   installedDependencies: string[]
   installedConfigs: Config[]
   updatedConfigs?: Config[]
@@ -11,7 +11,7 @@ export function checkIfTsShouldBeUsed({
   installedDependencies,
   installedConfigs,
   updatedConfigs,
-}: CheckIfTsShouldBeUsedParams): boolean {
+}: Params): boolean {
   const hasTsParser = installedDependencies.includes(DEPENDENCIES.TS_PARSER)
 
   if (hasTsParser) return true

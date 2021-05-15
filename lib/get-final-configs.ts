@@ -59,7 +59,7 @@ function reactWithNewJSXTransformSupport(
   return false
 }
 
-interface GetFinalConfigsParams {
+interface Params {
   packageJson: PackageJson
   updatedConfigs: Config[]
 }
@@ -67,7 +67,7 @@ interface GetFinalConfigsParams {
 export function getFinalConfigs({
   packageJson,
   updatedConfigs,
-}: GetFinalConfigsParams): Config[] {
+}: Params): Config[] {
   const { dependencies = {}, devDependencies = {} } = packageJson
 
   const allDependencies = {

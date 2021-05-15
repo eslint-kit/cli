@@ -1,5 +1,6 @@
 import ora from 'ora'
 import chalk from 'chalk'
+import program from 'commander'
 import {
   MaxVersions,
   MeaningfulDependency,
@@ -69,21 +70,35 @@ export async function updateDependencies({
   log(MESSAGES.PACKAGE_MANAGER.WARNING, [chalk.red, chalk.bold])
 
   try {
+    const { workspace } = program.opts()
+
     if (dependenciesToDelete.length > 0) {
       spin(chalk.yellow(MESSAGES.PACKAGE_MANAGER.REMOVING))
-      await packageManager.uninstall(dependenciesToDelete)
+      await packageManager.uninstall({
+        dependencies: dependenciesToDelete,
+        workspace,
+      })
       await showResult(chalk.green(MESSAGES.PACKAGE_MANAGER.REMOVED))
     }
 
     if (anyVersion.length > 0) {
       spin(chalk.yellow(MESSAGES.PACKAGE_MANAGER.INSTALLING))
-      await packageManager.install(anyVersion, 'dev')
+      await packageManager.install({
+        dependencies: anyVersion,
+        saveType: 'dev',
+        workspace,
+      })
       await showResult(chalk.green(MESSAGES.PACKAGE_MANAGER.INSTALLED))
     }
 
     if (exactVersion.length > 0) {
       spin(chalk.yellow(MESSAGES.PACKAGE_MANAGER.INSTALLING_EXACT))
-      await packageManager.install(exactVersion, 'dev', true)
+      await packageManager.install({
+        dependencies: exactVersion,
+        saveType: 'dev',
+        workspace,
+        exact: true,
+      })
       await showResult(chalk.green(MESSAGES.PACKAGE_MANAGER.INSTALLED))
     }
 

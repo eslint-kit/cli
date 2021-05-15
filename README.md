@@ -43,6 +43,12 @@ npm i -g @eslint-kit/cli
 eslint-kit
 ```
 
+## Common options
+
+- `-W, --workspace <name>` - use the specified yarn workspace as the working directory.
+
+  > Currently, it installs all dependencies into the workspace's package.json. If you want to keep eslint/prettier packages in the root package.json - do it manually.
+
 ## Commands
 
 - [Manage configs](#manage-configs)
@@ -63,6 +69,8 @@ or
 $ npx @eslint-kit/cli config
 ```
 
+Accepts all [common options](#common-options).
+
 ### Setup aliases
 
 Just enter aliases in JSON format and CLI will take care of it.
@@ -70,6 +78,8 @@ Just enter aliases in JSON format and CLI will take care of it.
 ```
 $ npx @eslint-kit/cli alias
 ```
+
+Accepts all [common options](#common-options).
 
 ### Check
 
@@ -86,3 +96,5 @@ $ npx @eslint-kit/cli check-versions
 ```
 
 Learn more about `eslint-kit` [here](https://github.com/eslint-kit/eslint-config-kit).
+
+Accepts all [common options](#common-options).

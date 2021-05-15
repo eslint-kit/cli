@@ -2,7 +2,13 @@ import path from 'path'
 import { FILENAMES } from './constants'
 import { FileSystemReader } from './readers'
 
-export async function addRecommendedPrettierConfig(): Promise<void> {
+interface Params {
+  rootDir: string
+}
+
+export async function addRecommendedPrettierConfig({
+  rootDir,
+}: Params): Promise<void> {
   const recommendedConfig = {
     semi: false,
     singleQuote: true,
@@ -13,7 +19,7 @@ export async function addRecommendedPrettierConfig(): Promise<void> {
   }
 
   return FileSystemReader.writeFile(
-    path.resolve(process.cwd(), FILENAMES.PRETTIER),
+    path.resolve(rootDir, FILENAMES.PRETTIER),
     JSON.stringify(recommendedConfig, null, 2)
   )
 }

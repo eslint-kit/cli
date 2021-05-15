@@ -3,12 +3,18 @@ import { FILENAMES } from './constants'
 import { PackageJson } from './shared-types'
 import { FileSystemReader } from './readers'
 
-export async function findPackageJson(): Promise<PackageJson> {
+interface Params {
+  rootDir?: string
+}
+
+export async function findPackageJson({
+  rootDir = process.cwd(),
+}: Params): Promise<PackageJson> {
   let json: string
 
   try {
     const buffer = await FileSystemReader.readFile(
-      path.resolve(process.cwd(), FILENAMES.PACKAGE_JSON)
+      path.resolve(rootDir, FILENAMES.PACKAGE_JSON)
     )
 
     json = buffer.toString()

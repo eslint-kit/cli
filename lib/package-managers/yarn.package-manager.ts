@@ -12,10 +12,13 @@ export class YarnPackageManager extends AbstractPackageManager {
   get cli(): PackageManagerCommands {
     return {
       install: 'add',
+      installWorkspace: name => `workspace ${name} add`,
       uninstall: 'remove',
+      uninstallWorkspace: name => `workspace ${name} remove`,
       saveFlag: '',
       saveDevFlag: '-D',
       exactFlag: '-E',
+      rootFlag: '-W',
     }
   }
 }

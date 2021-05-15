@@ -14,6 +14,7 @@ function bootstrap(): void {
     )
     .usage('<command>')
     .helpOption('-h --help', 'Output usage information')
+    .option('-W, --workspace <name>', 'Specify a workspace')
 
   ConfigCommand.load(program)
   AliasCommand.load(program)

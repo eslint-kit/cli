@@ -36,10 +36,13 @@ describe('NpmPackageManager', () => {
   it('should have the correct cli commands', () => {
     const expectedValues: PackageManagerCommands = {
       install: 'install',
+      installWorkspace: expect.any(Function),
       uninstall: 'uninstall',
+      uninstallWorkspace: expect.any(Function),
       saveFlag: '--save',
       saveDevFlag: '--save-dev',
       exactFlag: '-E',
+      rootFlag: '',
     }
 
     expect(packageManager.cli).toMatchObject(expectedValues)
@@ -49,13 +52,21 @@ describe('NpmPackageManager', () => {
     it('should use the proper command for installing', async () => {
       const spy = jest.spyOn((packageManager as any).runner, 'run')
 
-      await packageManager.install(['one', 'two'])
+      await packageManager.install({
+        dependencies: ['one', 'two'],
+      })
       expect(spy).toBeCalledWith('install one two --silent', true)
 
-      await packageManager.install(['one', 'two'], 'prod')
+      await packageManager.install({
+        dependencies: ['one', 'two'],
+        saveType: 'prod',
+      })
       expect(spy).toBeCalledWith('install --save one two --silent', true)
 
-      await packageManager.install(['one', 'two'], 'dev')
+      await packageManager.install({
+        dependencies: ['one', 'two'],
+        saveType: 'dev',
+      })
       expect(spy).toBeCalledWith('install --save-dev one two --silent', true)
     })
   })
@@ -64,13 +75,21 @@ describe('NpmPackageManager', () => {
     it('should use the proper command for uninstalling', async () => {
       const spy = jest.spyOn((packageManager as any).runner, 'run')
 
-      await packageManager.uninstall(['one', 'two'])
+      await packageManager.uninstall({
+        dependencies: ['one', 'two'],
+      })
       expect(spy).toBeCalledWith('uninstall one two --silent', true)
 
-      await packageManager.uninstall(['one', 'two'], 'prod')
+      await packageManager.uninstall({
+        dependencies: ['one', 'two'],
+        saveType: 'prod',
+      })
       expect(spy).toBeCalledWith('uninstall --save one two --silent', true)
 
-      await packageManager.uninstall(['one', 'two'], 'dev')
+      await packageManager.uninstall({
+        dependencies: ['one', 'two'],
+        saveType: 'dev',
+      })
       expect(spy).toBeCalledWith('uninstall --save-dev one two --silent', true)
     })
   })

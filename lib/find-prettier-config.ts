@@ -9,13 +9,13 @@ const configFileNames = [
   '.prettierrc.toml',
 ]
 
-interface FindPrettierConfigParams {
+interface Params {
   rootDirFileNames: string[]
 }
 
 export function findPrettierConfig({
   rootDirFileNames,
-}: FindPrettierConfigParams): PrettierConfigMeta {
+}: Params): PrettierConfigMeta {
   const isExist = configFileNames.some(configFileName => {
     return rootDirFileNames.some(fileName => fileName === configFileName)
   })

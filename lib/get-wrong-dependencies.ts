@@ -11,7 +11,7 @@ import {
   isDependencyMeaningful,
 } from './dependency-guards'
 
-interface GetWrongDependenciesParams {
+interface Params {
   packageJson: PackageJson
   requiredDependencies: MeaningfulDependency[]
   maxVersions?: MaxVersions
@@ -21,7 +21,7 @@ export function getWrongDependencies({
   packageJson,
   requiredDependencies,
   maxVersions = MAX_VERSIONS,
-}: GetWrongDependenciesParams): WrongDependencies {
+}: Params): WrongDependencies {
   const { dependencies = {}, devDependencies = {} } = packageJson
 
   const allDependencies = {

@@ -1,12 +1,10 @@
 import { PackageJson } from './shared-types'
 
-interface GetInstalledDependenciesParams {
+interface Params {
   packageJson: PackageJson
 }
 
-export function getInstalledDependencies({
-  packageJson,
-}: GetInstalledDependenciesParams): string[] {
+export function getInstalledDependencies({ packageJson }: Params): string[] {
   const { dependencies = {}, devDependencies = {} } = packageJson
 
   const dependenciesNames = Object.keys(dependencies)

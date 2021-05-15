@@ -3,7 +3,7 @@ import { toMap } from './util/to-map'
 import { DEPENDENCIES } from './constants'
 import { toConfigPackage } from './config-name-helpers'
 
-interface GetRequiredDependenciesParams {
+interface Params {
   installedDependencies: string[]
   finalConfigs?: Config[]
   hasAliases?: boolean
@@ -15,7 +15,7 @@ export function getRequiredDependencies({
   finalConfigs,
   hasAliases = false,
   useTs,
-}: GetRequiredDependenciesParams): MeaningfulDependency[] {
+}: Params): MeaningfulDependency[] {
   const dependenciesSet: Set<MeaningfulDependency> = new Set()
 
   function add(deps: MeaningfulDependency[]): void {

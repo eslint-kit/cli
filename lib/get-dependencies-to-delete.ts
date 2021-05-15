@@ -4,7 +4,7 @@ import { isFromConfigKit } from './config-name-helpers'
 import { isDependencyMeaningful } from './dependency-guards'
 import { MeaningfulDependency } from './shared-types'
 
-interface GetDependenciesToDeleteParams {
+interface Params {
   requiredDependencies?: MeaningfulDependency[]
   installedDependencies?: string[]
   wrongDependenciesToUpdate: MeaningfulDependency[]
@@ -14,7 +14,7 @@ export function getDependenciesToDelete({
   requiredDependencies,
   installedDependencies,
   wrongDependenciesToUpdate,
-}: GetDependenciesToDeleteParams): MeaningfulDependency[] {
+}: Params): MeaningfulDependency[] {
   if (!requiredDependencies || !installedDependencies) {
     return wrongDependenciesToUpdate
   }

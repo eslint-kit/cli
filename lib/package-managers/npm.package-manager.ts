@@ -10,10 +10,13 @@ export class NpmPackageManager extends AbstractPackageManager {
   get cli(): PackageManagerCommands {
     return {
       install: 'install',
+      installWorkspace: () => '-',
       uninstall: 'uninstall',
+      uninstallWorkspace: () => '-',
       saveFlag: '--save',
       saveDevFlag: '--save-dev',
       exactFlag: '-E',
+      rootFlag: '',
     }
   }
 }

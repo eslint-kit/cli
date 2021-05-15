@@ -13,6 +13,7 @@ import { getPackageManager } from './get-package-manager'
 import { findPrettierConfig } from './find-prettier-config'
 import { getRootDirFileNames } from './get-root-dir-file-names'
 import { checkIfTsShouldBeUsed } from './check-if-ts-should-be-used'
+import { getRootDir } from './get-root-dir'
 
 type Keys<T> = Array<keyof T>
 
@@ -33,6 +34,8 @@ async function unpromisify<T extends {}, O extends Unpromisify<T>>(
 }
 
 interface Data {
+  rootPackageJson: PackageJson
+  rootDir: string
   rootDirFileNames: string[]
   packageJson: PackageJson
   installedDependencies: string[]
@@ -57,11 +60,23 @@ type ResolutionConfig = {
 }
 
 const resolutionConfig: ResolutionConfig = {
+  packageManager: {
+    resolver: getPackageManager,
+  },
+  rootPackageJson: {
+    resolver: findPackageJson,
+  },
+  rootDir: {
+    resolver: getRootDir,
+    dependencies: ['rootPackageJson'],
+  },
   rootDirFileNames: {
     resolver: getRootDirFileNames,
+    dependencies: ['rootDir'],
   },
   packageJson: {
     resolver: findPackageJson,
+    dependencies: ['rootDir'],
   },
   installedDependencies: {
     resolver: getInstalledDependencies,
@@ -77,10 +92,6 @@ const resolutionConfig: ResolutionConfig = {
   },
   prettierConfigMeta: {
     resolver: findPrettierConfig,
-    dependencies: ['rootDirFileNames'],
-  },
-  packageManager: {
-    resolver: getPackageManager,
     dependencies: ['rootDirFileNames'],
   },
   useTs: {

@@ -1,6 +1,6 @@
 import { MeaningfulDependency } from './shared-types'
 
-interface GetDependenciesToInstallParams {
+interface Params {
   requiredDependencies?: MeaningfulDependency[]
   installedDependencies?: string[]
   wrongDependenciesToUpdate: MeaningfulDependency[]
@@ -10,7 +10,7 @@ export function getDependenciesToInstall({
   requiredDependencies,
   installedDependencies,
   wrongDependenciesToUpdate,
-}: GetDependenciesToInstallParams): MeaningfulDependency[] {
+}: Params): MeaningfulDependency[] {
   if (!requiredDependencies || !installedDependencies) {
     return wrongDependenciesToUpdate
   }

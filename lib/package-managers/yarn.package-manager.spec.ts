@@ -36,10 +36,13 @@ describe('YarnPackageManager', () => {
   it('should have the correct cli commands', () => {
     const expectedValues: PackageManagerCommands = {
       install: 'add',
+      installWorkspace: expect.any(Function),
       uninstall: 'remove',
+      uninstallWorkspace: expect.any(Function),
       saveFlag: '',
       saveDevFlag: '-D',
       exactFlag: '-E',
+      rootFlag: '-W',
     }
 
     expect(packageManager.cli).toMatchObject(expectedValues)
@@ -49,14 +52,28 @@ describe('YarnPackageManager', () => {
     it('should use the proper command for installing', async () => {
       const spy = jest.spyOn((packageManager as any).runner, 'run')
 
-      await packageManager.install(['one', 'two'])
-      expect(spy).toBeCalledWith('add one two --silent', true)
+      await packageManager.install({
+        dependencies: ['one', 'two'],
+      })
+      expect(spy).toBeCalledWith('add -W one two --silent', true)
 
-      await packageManager.install(['one', 'two'], 'prod')
-      expect(spy).toBeCalledWith('add one two --silent', true)
+      await packageManager.install({
+        dependencies: ['one', 'two'],
+        saveType: 'prod',
+      })
+      expect(spy).toBeCalledWith('add -W one two --silent', true)
 
-      await packageManager.install(['one', 'two'], 'dev')
-      expect(spy).toBeCalledWith('add -D one two --silent', true)
+      await packageManager.install({
+        dependencies: ['one', 'two'],
+        saveType: 'dev',
+      })
+      expect(spy).toBeCalledWith('add -D -W one two --silent', true)
+
+      await packageManager.install({
+        dependencies: ['one', 'two'],
+        workspace: 'foo',
+      })
+      expect(spy).toBeCalledWith('workspace foo add one two --silent', true)
     })
   })
 
@@ -64,14 +81,28 @@ describe('YarnPackageManager', () => {
     it('should use the proper command for uninstalling', async () => {
       const spy = jest.spyOn((packageManager as any).runner, 'run')
 
-      await packageManager.uninstall(['one', 'two'])
-      expect(spy).toBeCalledWith('remove one two --silent', true)
+      await packageManager.uninstall({
+        dependencies: ['one', 'two'],
+      })
+      expect(spy).toBeCalledWith('remove -W one two --silent', true)
 
-      await packageManager.uninstall(['one', 'two'], 'prod')
-      expect(spy).toBeCalledWith('remove one two --silent', true)
+      await packageManager.uninstall({
+        dependencies: ['one', 'two'],
+        saveType: 'prod',
+      })
+      expect(spy).toBeCalledWith('remove -W one two --silent', true)
 
-      await packageManager.uninstall(['one', 'two'], 'dev')
-      expect(spy).toBeCalledWith('remove one two --silent', true)
+      await packageManager.uninstall({
+        dependencies: ['one', 'two'],
+        saveType: 'dev',
+      })
+      expect(spy).toBeCalledWith('remove -W one two --silent', true)
+
+      await packageManager.uninstall({
+        dependencies: ['one', 'two'],
+        workspace: 'foo',
+      })
+      expect(spy).toBeCalledWith('workspace foo remove one two --silent', true)
     })
   })
 })

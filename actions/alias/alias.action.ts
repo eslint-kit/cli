@@ -18,6 +18,7 @@ export class AliasAction {
     const { aliasesMeta } = await askQuestions()
 
     const {
+      rootDir,
       packageJson,
       eslintConfigMeta,
       installedDependencies,
@@ -25,6 +26,7 @@ export class AliasAction {
       packageManager,
       installedConfigs,
     } = await getDataBySchema({
+      rootDir: true,
       packageJson: true,
       eslintConfigMeta: true,
       installedDependencies: true,
@@ -40,6 +42,7 @@ export class AliasAction {
     })
 
     await updateEslintConfig({
+      rootDir,
       updatedConfig,
       packageJson,
       eslintConfigMeta,

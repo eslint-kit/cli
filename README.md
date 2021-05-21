@@ -13,6 +13,10 @@
 
 ---
 
+The package was moved to [@eslint-kit monorepo](https://github.com/eslint-kit/eslint-config-kit).
+
+---
+
 The ESLint Kit CLI is a command-line interface tool that helps you to setup ESLint for your project.
 
 It can:
